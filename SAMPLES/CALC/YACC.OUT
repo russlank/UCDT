@@ -1,0 +1,246 @@
+   1) S -> E
+   2) E -> E Plus T
+   3) E -> E Minus T
+   4) E -> T
+   5) T -> T Mul F
+   6) T -> T Div F
+   7) T -> F
+   8) F -> Number
+   9) F -> LB E RB
+  10) F -> Minus F
+
+Ne Set = 
+Terminals = Plus  Minus  Mul  Div  Number  LB  RB  EOF  
+Nonterminals = S  E  T  F  
+Terminate symbol = EOF
+Empty symbol = e
+
+
+CLOSURE [1]
+THE KERNEL:
+S ->.E  [ EOF ]
+THE ITEMS:
+S ->.E  [ EOF ] GOTO(2)
+E ->.E Plus T  [ EOF Plus Minus ] GOTO(2)
+E ->.E Minus T  [ EOF Plus Minus ] GOTO(2)
+E ->.T  [ EOF Plus Minus ] GOTO(3)
+T ->.T Mul F  [ EOF Plus Minus Mul Div ] GOTO(3)
+T ->.T Div F  [ EOF Plus Minus Mul Div ] GOTO(3)
+T ->.F  [ EOF Plus Minus Mul Div ] GOTO(4)
+F ->.Number  [ EOF Plus Minus Mul Div ] GOTO(5)
+F ->.LB E RB  [ EOF Plus Minus Mul Div ] GOTO(6)
+F ->.Minus F  [ EOF Plus Minus Mul Div ] GOTO(7)
+
+
+CLOSURE [2]
+THE KERNEL:
+S -> E.  [ EOF ]
+E -> E.Plus T  [ EOF Plus Minus ]
+E -> E.Minus T  [ EOF Plus Minus ]
+THE ITEMS:
+S -> E.  [ EOF ]  REDUCE[1]
+E -> E.Plus T  [ EOF Plus Minus ] GOTO(8)
+E -> E.Minus T  [ EOF Plus Minus ] GOTO(9)
+
+
+CLOSURE [3]
+THE KERNEL:
+E -> T.  [ EOF Plus Minus RB ]
+T -> T.Mul F  [ EOF Plus Minus Mul Div RB ]
+T -> T.Div F  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+E -> T.  [ EOF Plus Minus RB ]  REDUCE[4]
+T -> T.Mul F  [ EOF Plus Minus Mul Div RB ] GOTO(10)
+T -> T.Div F  [ EOF Plus Minus Mul Div RB ] GOTO(11)
+
+
+CLOSURE [4]
+THE KERNEL:
+T -> F.  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+T -> F.  [ EOF Plus Minus Mul Div RB ]  REDUCE[7]
+
+
+CLOSURE [5]
+THE KERNEL:
+F -> Number.  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+F -> Number.  [ EOF Plus Minus Mul Div RB ]  REDUCE[8]
+
+
+CLOSURE [6]
+THE KERNEL:
+F -> LB.E RB  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+F -> LB.E RB  [ EOF Plus Minus Mul Div RB ] GOTO(12)
+E ->.E Plus T  [ RB Plus Minus ] GOTO(12)
+E ->.E Minus T  [ RB Plus Minus ] GOTO(12)
+E ->.T  [ RB Plus Minus ] GOTO(3)
+T ->.T Mul F  [ RB Plus Minus Mul Div ] GOTO(3)
+T ->.T Div F  [ RB Plus Minus Mul Div ] GOTO(3)
+T ->.F  [ RB Plus Minus Mul Div ] GOTO(4)
+F ->.Number  [ RB Plus Minus Mul Div ] GOTO(5)
+F ->.LB E RB  [ RB Plus Minus Mul Div ] GOTO(6)
+F ->.Minus F  [ RB Plus Minus Mul Div ] GOTO(7)
+
+
+CLOSURE [7]
+THE KERNEL:
+F -> Minus.F  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+F -> Minus.F  [ EOF Plus Minus Mul Div RB ] GOTO(13)
+F ->.Number  [ EOF Plus Minus Mul Div RB ] GOTO(5)
+F ->.LB E RB  [ EOF Plus Minus Mul Div RB ] GOTO(6)
+F ->.Minus F  [ EOF Plus Minus Mul Div RB ] GOTO(7)
+
+
+CLOSURE [8]
+THE KERNEL:
+E -> E Plus.T  [ EOF Plus Minus RB ]
+THE ITEMS:
+E -> E Plus.T  [ EOF Plus Minus RB ] GOTO(14)
+T ->.T Mul F  [ EOF Plus Minus RB Mul Div ] GOTO(14)
+T ->.T Div F  [ EOF Plus Minus RB Mul Div ] GOTO(14)
+T ->.F  [ EOF Plus Minus RB Mul Div ] GOTO(4)
+F ->.Number  [ EOF Plus Minus RB Mul Div ] GOTO(5)
+F ->.LB E RB  [ EOF Plus Minus RB Mul Div ] GOTO(6)
+F ->.Minus F  [ EOF Plus Minus RB Mul Div ] GOTO(7)
+
+
+CLOSURE [9]
+THE KERNEL:
+E -> E Minus.T  [ EOF Plus Minus RB ]
+THE ITEMS:
+E -> E Minus.T  [ EOF Plus Minus RB ] GOTO(15)
+T ->.T Mul F  [ EOF Plus Minus RB Mul Div ] GOTO(15)
+T ->.T Div F  [ EOF Plus Minus RB Mul Div ] GOTO(15)
+T ->.F  [ EOF Plus Minus RB Mul Div ] GOTO(4)
+F ->.Number  [ EOF Plus Minus RB Mul Div ] GOTO(5)
+F ->.LB E RB  [ EOF Plus Minus RB Mul Div ] GOTO(6)
+F ->.Minus F  [ EOF Plus Minus RB Mul Div ] GOTO(7)
+
+
+CLOSURE [10]
+THE KERNEL:
+T -> T Mul.F  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+T -> T Mul.F  [ EOF Plus Minus Mul Div RB ] GOTO(16)
+F ->.Number  [ EOF Plus Minus Mul Div RB ] GOTO(5)
+F ->.LB E RB  [ EOF Plus Minus Mul Div RB ] GOTO(6)
+F ->.Minus F  [ EOF Plus Minus Mul Div RB ] GOTO(7)
+
+
+CLOSURE [11]
+THE KERNEL:
+T -> T Div.F  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+T -> T Div.F  [ EOF Plus Minus Mul Div RB ] GOTO(17)
+F ->.Number  [ EOF Plus Minus Mul Div RB ] GOTO(5)
+F ->.LB E RB  [ EOF Plus Minus Mul Div RB ] GOTO(6)
+F ->.Minus F  [ EOF Plus Minus Mul Div RB ] GOTO(7)
+
+
+CLOSURE [12]
+THE KERNEL:
+F -> LB E.RB  [ EOF Plus Minus Mul Div RB ]
+E -> E.Plus T  [ RB Plus Minus ]
+E -> E.Minus T  [ RB Plus Minus ]
+THE ITEMS:
+F -> LB E.RB  [ EOF Plus Minus Mul Div RB ] GOTO(18)
+E -> E.Plus T  [ RB Plus Minus ] GOTO(8)
+E -> E.Minus T  [ RB Plus Minus ] GOTO(9)
+
+
+CLOSURE [13]
+THE KERNEL:
+F -> Minus F.  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+F -> Minus F.  [ EOF Plus Minus Mul Div RB ]  REDUCE[10]
+
+
+CLOSURE [14]
+THE KERNEL:
+E -> E Plus T.  [ EOF Plus Minus RB ]
+T -> T.Mul F  [ EOF Plus Minus Mul Div RB ]
+T -> T.Div F  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+E -> E Plus T.  [ EOF Plus Minus RB ]  REDUCE[2]
+T -> T.Mul F  [ EOF Plus Minus Mul Div RB ] GOTO(10)
+T -> T.Div F  [ EOF Plus Minus Mul Div RB ] GOTO(11)
+
+
+CLOSURE [15]
+THE KERNEL:
+E -> E Minus T.  [ EOF Plus Minus RB ]
+T -> T.Mul F  [ EOF Plus Minus Mul Div RB ]
+T -> T.Div F  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+E -> E Minus T.  [ EOF Plus Minus RB ]  REDUCE[3]
+T -> T.Mul F  [ EOF Plus Minus Mul Div RB ] GOTO(10)
+T -> T.Div F  [ EOF Plus Minus Mul Div RB ] GOTO(11)
+
+
+CLOSURE [16]
+THE KERNEL:
+T -> T Mul F.  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+T -> T Mul F.  [ EOF Plus Minus Mul Div RB ]  REDUCE[5]
+
+
+CLOSURE [17]
+THE KERNEL:
+T -> T Div F.  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+T -> T Div F.  [ EOF Plus Minus Mul Div RB ]  REDUCE[6]
+
+
+CLOSURE [18]
+THE KERNEL:
+F -> LB E RB.  [ EOF Plus Minus Mul Div RB ]
+THE ITEMS:
+F -> LB E RB.  [ EOF Plus Minus Mul Div RB ]  REDUCE[9]
+
+
+
+ACTION TABLE:
+   1:     S5  ERR   S7  ERR  ERR   S6  ERR  ERR     ---    2    3    4
+   2:    ERR   S8   S9  ERR  ERR  ERR  ERR  ACC     ---  ---  ---  ---
+   3:    ERR   R4   R4  S10  S11  ERR   R4   R4     ---  ---  ---  ---
+   4:    ERR   R7   R7   R7   R7  ERR   R7   R7     ---  ---  ---  ---
+   5:    ERR   R8   R8   R8   R8  ERR   R8   R8     ---  ---  ---  ---
+   6:     S5  ERR   S7  ERR  ERR   S6  ERR  ERR     ---   12    3    4
+   7:     S5  ERR   S7  ERR  ERR   S6  ERR  ERR     ---  ---  ---   13
+   8:     S5  ERR   S7  ERR  ERR   S6  ERR  ERR     ---  ---   14    4
+   9:     S5  ERR   S7  ERR  ERR   S6  ERR  ERR     ---  ---   15    4
+  10:     S5  ERR   S7  ERR  ERR   S6  ERR  ERR     ---  ---  ---   16
+  11:     S5  ERR   S7  ERR  ERR   S6  ERR  ERR     ---  ---  ---   17
+  12:    ERR   S8   S9  ERR  ERR  ERR  S18  ERR     ---  ---  ---  ---
+  13:    ERR  R10  R10  R10  R10  ERR  R10  R10     ---  ---  ---  ---
+  14:    ERR   R2   R2  S10  S11  ERR   R2   R2     ---  ---  ---  ---
+  15:    ERR   R3   R3  S10  S11  ERR   R3   R3     ---  ---  ---  ---
+  16:    ERR   R5   R5   R5   R5  ERR   R5   R5     ---  ---  ---  ---
+  17:    ERR   R6   R6   R6   R6  ERR   R6   R6     ---  ---  ---  ---
+  18:    ERR   R9   R9   R9   R9  ERR   R9   R9     ---  ---  ---  ---
+
+TERMINALS:
+1  Number
+2  Plus
+3  Minus
+4  Mul
+5  Div
+6  LB
+7  RB
+8  EOF
+
+NONTERMINALS:
+1  S
+2  E
+3  T
+4  F
+
+
+STATESCOUNT       = 18
+TERMINALCOUNT     = 8
+NONTERMINALCOUNT  = 4
+RULESCOUNT        = 10
+

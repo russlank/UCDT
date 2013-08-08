@@ -1,0 +1,46 @@
+X = 10;
+Y = 10+20;
+X = R;
+
+Cir1 = ( X = X*1.2;
+         Y = Y*1.2;
+         point 320+X,240+Y;
+         );
+
+Cir2 = ( R = R + 1;
+        X = R*cos(I);
+        Y = R*sin(I);
+        line 320,240,320+X,240+Y;
+        I = I+(2*3.14)/200;
+        repdraw 10 Cir1;
+        );
+
+Cir = ( R = 1;
+        I = 0;
+        repdraw 200 Cir2;
+
+        );
+
+Sin1 = ( Y = 320 + A * exp(T / 10) * sin(T);
+         X = X + 5;
+         point X,Y;
+         T = T + PI / 10;
+         );
+
+Sin2 = ( PI = 3.14;
+         T = 0;
+         X = 0;
+         repdraw 640 / 2 Sin1;
+         A = A + 0.5;
+         );
+
+Sin = ( A = -1;
+        repdraw 5 Sin2;
+        );
+
+draw Cir;
+draw Sin;
+
+draw ( box 10,20,100,200;);
+draw ( line 10,20,100,200;
+       line 100,20,10,200;)

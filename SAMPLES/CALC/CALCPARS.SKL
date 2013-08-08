@@ -1,0 +1,173 @@
+unit CalcParser;
+
+interface
+
+uses Generics, Lexical, CalcLexical, Parser, Strings;
+
+type PSemanticProc = ^TSemanticProc;
+     TSemanticProc = procedure( AParser: PParser);
+
+     PCalcParser = ^TCalcParser;
+     TCalcParser = object( TParser)
+     private
+        Lexical: PCalcLexical;
+
+     public
+        constructor Create( AOwner: PErrGeneric; ASource: PStream);
+        destructor Destroy; virtual;
+        procedure ExecuteSemantic( ARule: Byte); virtual;
+        procedure NextToken; virtual;
+        function GetGoto( ATopState: Byte; ANonterminal: Byte): Byte; virtual;
+        procedure GetAction( ATopState: Byte; ATerminal: Word; var AAction: TActionRec); virtual;
+        function GetNonterminal( ARule: Byte): Byte; virtual;
+        function GetRuleSize( ARule: Byte): Byte; virtual;
+        procedure Error( AErrorCode: Byte); virtual;
+        end;
+
+implementation
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+{$I CALCDEFS.INC}
+
+type PNumberAttr = ^TNumberAttr;
+     TNumberAttr = object( TGeneric)
+        Value: Real;
+        end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+{$F+}
+%%PAS_PROCEDURES
+
+const
+
+%%PAS_DEFINES
+
+      ActionTable: array [1..YACC_STATESCOUNT, 1..YACC_TERMINALSCOUNT] of TActionRec =
+%%PAS_ACTION
+
+      GotoTable: array[ 1..YACC_STATESCOUNT, 1..YACC_NONTERMINALSCOUNT] of Byte =
+%%PAS_GOTO
+
+      RuleSizes: array[ 1..YACC_RULESCOUNT] of Byte =
+%%PAS_RIGHTSIDES
+
+      RulesSymbol: array[ 1..YACC_RULESCOUNT] of Byte =
+%%PAS_LEFTSIDES
+
+      SemanticsTable: array[ 1..YACC_RULESCOUNT] of TSemanticProc =
+%%PAS_REDUCTIONS
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TCalcParser.Create( AOwner: PErrGeneric; ASource: PStream);
+begin
+     inherited Create( AOwner);
+     Lexical := New( PCalcLexical, Create( @Self, ASource));
+end;
+
+destructor TCalcParser.Destroy;
+begin
+     if ( Lexical <> nil)
+     then Lexical^.Free;
+
+     inherited Destroy;
+end;
+
+procedure TCalcParser.NextToken;
+var Attrs: TTokenAttributes;
+    Token: Word;
+    TokenAttrs: PGeneric;
+begin
+     if Lexical^.Token( Attrs)
+     then begin
+          Token := Attrs.Token;
+          case Token
+          of YACC_NUMBER: begin
+                          TokenAttrs := New( PNumberAttr, Create);
+                          PNumberAttr(TokenAttrs)^.Value := Attrs.Value;
+                          end;
+          0: begin
+             TokenAttrs := nil;
+             StopParsing;
+             end
+          else
+              TokenAttrs := nil;
+              end;
+          end
+     else begin
+          TokenAttrs := nil;
+          StopParsing;
+          end;
+
+     SetToken( Token, TokenAttrs);
+end;
+
+procedure TCalcParser.ExecuteSemantic( ARule: Byte);
+begin
+     if (@SemanticsTable[ARule] <> nil)
+     then SemanticsTable[ ARule]( @Self);
+end;
+
+function TCalcParser.GetGoto( ATopState: Byte; ANonterminal: Byte): Byte;
+begin
+     if ((ATopState <> 0) and (ANonterminal <> 0))
+     then GetGoto := GotoTable[ ATopState, ANonTerminal]
+     else begin
+          GetGoto := 0;
+          StopParsing;
+          end;
+end;
+
+procedure TCalcParser.GetAction( ATopState: Byte; ATerminal: Word; var AAction: TActionRec);
+begin
+     if ((ATerminal <> 0) and (ATopState <> 0))
+     then AAction := ActionTable[ ATopState, ATerminal]
+     else begin
+          AAction.Action := actError;
+          AAction.ErrorCode := 0;
+          StopParsing;
+          end;
+end;
+
+function TCalcParser.GetNonterminal( ARule: Byte): Byte;
+begin
+     if (ARule <> 0)
+     then GetNonterminal := RulesSymbol[ ARule]
+     else begin
+          StopParsing;
+          GetNonterminal := 0;
+          end;
+end;
+
+function TCalcParser.GetRuleSize( ARule: Byte): Byte;
+begin
+     if (ARule <> 0)
+     then GetRuleSize := RuleSizes[ ARule]
+     else GetRuleSize := 0;
+end;
+
+procedure TCalcParser.Error( AErrorCode: Byte);
+var S1, S2: string;
+begin
+     inherited Error( AErrorCode);
+     if ( Lexical <> nil)
+     then begin
+          Str( Lexical^.GetLineNo, S1);
+          Str( Lexical^.GetCollomnNo, S2);
+          S1 := 'PARSER ERROR: Syntax error (Line ' + S1 + ', Col ' + S2 + ').';
+          AddError( New( PMessageError, Create( S1)));
+          end
+     else begin
+          AddError( New( PMessageError, Create( 'PARSER ERROR: Syntax error')));
+          end;
+end;
+
+end.

@@ -1,0 +1,1997 @@
+REGULAR EXPRESIONS:
+
+> DIGIT=['0'..'9']
+> LETTER=(['s'])|((['i'])|((['n'])|((['c'])|((['o'])|((['t'])|((['a'])|((['l'])|((['q'])|((['r'])|((['e'])|((['x'])|((['p'])|((['d'])|((['w'])|((['b'])|(['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']))))))))))))))))
+> NUMBER=(['0'..'9'])+ (['.'] (['0'..'9'])+)?
+> ID=(['s'])|((['i'])|((['n'])|((['c'])|((['o'])|((['t'])|((['a'])|((['l'])|((['q'])|((['r'])|((['e'])|((['x'])|((['p'])|((['d'])|((['w'])|((['b'])|(['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z'])))))))))))))))) ((['0'..'9'])|((['s'])|((['i'])|((['n'])|((['c'])|((['o'])|((['t'])|((['a'])|((['l'])|((['q'])|((['r'])|((['e'])|((['x'])|((['p'])|((['d'])|((['w'])|((['b'])|(['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']))))))))))))))))))*
+> BLANK=([''..' '])+
+
+
+ALPHABET-SYMBOLS:
+
+   1 : ['0'..'9']
+  29 : ['.']
+   3 : [''..' ']
+   4 : ['=']
+   5 : ['+']
+   6 : ['-']
+   7 : ['/']
+   8 : ['*']
+   9 : ['(']
+  10 : [')']
+  11 : [',']
+  12 : [';']
+   2 : ['s']
+  21 : ['i']
+  22 : ['n']
+  14 : ['c']
+  23 : ['o']
+  15 : ['t']
+  24 : ['a']
+  13 : ['l']
+  25 : ['q']
+  17 : ['r']
+  16 : ['e']
+  26 : ['x']
+  20 : ['p']
+  19 : ['d']
+  27 : ['w']
+  18 : ['b']
+  28 : ['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']
+
+
+PROCEDURES:
+
+> begin
+     {YACC_Fun}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Fun;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;> begin
+       {YACC_RepDraw}
+       TTokenAttributes(AInfo).Token := YACC_RepDraw;
+end;> begin
+       {YACC_DRAW}
+       TTokenAttributes(AInfo).Token := YACC_Draw;
+end;> begin
+       {YACC_Circle}
+       TTokenAttributes(AInfo).Token := YACC_Circle;
+end;> begin
+       {YACC_Line}
+       TTokenAttributes(AInfo).Token := YACC_Line;
+end;> begin
+       {YACC_Box}
+       TTokenAttributes(AInfo).Token := YACC_Box;
+end;> begin
+       {YACC_Point}
+       TTokenAttributes(AInfo).Token := YACC_Point;
+end;> var
+     Value: Real;
+     Code: Integer;
+begin
+     {YACC_Number}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Number;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        Val( Lexeme, Value, Code)
+        end;
+end;> begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;> begin
+     {BLANK}
+     AReturn := False;
+end;> begin
+     {YACC_Assign}
+     TTokenAttributes(AInfo).Token := YACC_Assign;
+end;> begin
+     {YACC_Plus}
+     TTokenAttributes(AInfo).Token := YACC_Plus;
+end;> begin
+     {YACC_Minus}
+     TTokenAttributes(AInfo).Token := YACC_Minus;
+end;> begin
+     {YACC_Plus}
+     TTokenAttributes(AInfo).Token := YACC_Div;
+end;> begin
+     {YACC_Mul}
+     TTokenAttributes(AInfo).Token := YACC_Mul;
+end;> begin
+     {YACC_LB}
+     TTokenAttributes(AInfo).Token := YACC_LB;
+end;> begin
+     {YACC_RB}
+     TTokenAttributes(AInfo).Token := YACC_RB;
+end;> begin
+       {YACC_Coma}
+       TTokenAttributes(AInfo).Token := YACC_Coma;
+end;> begin
+       {YACC_SColen}
+       TTokenAttributes(AInfo).Token := YACC_SColen;
+end;
+
+THE DFA:
+
+Start state :1
+STATE.1
+   --['0'..'9']-->9
+   --['s']-->10
+   --[''..' ']-->11
+   --['=']-->12
+   --['+']-->13
+   --['-']-->14
+   --['/']-->15
+   --['*']-->16
+   --['(']-->17
+   --[')']-->18
+   --[',']-->19
+   --[';']-->20
+   --['l']-->24
+   --['c']-->36
+   --['t']-->37
+   --['e']-->38
+   --['r']-->39
+   --['b']-->40
+   --['d']-->46
+   --['p']-->50
+   --['i']-->54
+   --['n']-->54
+   --['o']-->54
+   --['a']-->54
+   --['q']-->54
+   --['x']-->54
+   --['w']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.2 * begin
+     {YACC_Fun}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Fun;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.3 * begin
+       {YACC_RepDraw}
+       TTokenAttributes(AInfo).Token := YACC_RepDraw;
+end;
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.4 * begin
+       {YACC_DRAW}
+       TTokenAttributes(AInfo).Token := YACC_Draw;
+end;
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.5 * begin
+       {YACC_Circle}
+       TTokenAttributes(AInfo).Token := YACC_Circle;
+end;
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.6 * begin
+       {YACC_Line}
+       TTokenAttributes(AInfo).Token := YACC_Line;
+end;
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.7 * begin
+       {YACC_Box}
+       TTokenAttributes(AInfo).Token := YACC_Box;
+end;
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.8 * begin
+       {YACC_Point}
+       TTokenAttributes(AInfo).Token := YACC_Point;
+end;
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.9 * var
+     Value: Real;
+     Code: Integer;
+begin
+     {YACC_Number}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Number;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        Val( Lexeme, Value, Code)
+        end;
+end;
+   --['0'..'9']-->9
+   --['.']-->21
+
+STATE.10 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['i']-->25
+   --['q']-->26
+   --['0'..'9']-->54
+   --['s']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.11 * begin
+     {BLANK}
+     AReturn := False;
+end;
+   --[''..' ']-->11
+
+STATE.12 * begin
+     {YACC_Assign}
+     TTokenAttributes(AInfo).Token := YACC_Assign;
+end;
+
+STATE.13 * begin
+     {YACC_Plus}
+     TTokenAttributes(AInfo).Token := YACC_Plus;
+end;
+
+STATE.14 * begin
+     {YACC_Minus}
+     TTokenAttributes(AInfo).Token := YACC_Minus;
+end;
+
+STATE.15 * begin
+     {YACC_Plus}
+     TTokenAttributes(AInfo).Token := YACC_Div;
+end;
+
+STATE.16 * begin
+     {YACC_Mul}
+     TTokenAttributes(AInfo).Token := YACC_Mul;
+end;
+
+STATE.17 * begin
+     {YACC_LB}
+     TTokenAttributes(AInfo).Token := YACC_LB;
+end;
+
+STATE.18 * begin
+     {YACC_RB}
+     TTokenAttributes(AInfo).Token := YACC_RB;
+end;
+
+STATE.19 * begin
+       {YACC_Coma}
+       TTokenAttributes(AInfo).Token := YACC_Coma;
+end;
+
+STATE.20 * begin
+       {YACC_SColen}
+       TTokenAttributes(AInfo).Token := YACC_SColen;
+end;
+
+STATE.21
+   --['0'..'9']-->23
+
+STATE.22 * begin
+     {YACC_Fun}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Fun;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['t']-->2
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.23 * var
+     Value: Real;
+     Code: Integer;
+begin
+     {YACC_Number}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Number;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        Val( Lexeme, Value, Code)
+        end;
+end;
+   --['0'..'9']-->23
+
+STATE.24 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['n']-->2
+   --['i']-->41
+   --['0'..'9']-->54
+   --['s']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.25 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['n']-->2
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.26 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['r']-->22
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.27 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['s']-->2
+   --['0'..'9']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.28 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['n']-->2
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.29 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['p']-->2
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.30 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['x']-->7
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.31 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['e']-->6
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.32 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['w']-->4
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.33 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['t']-->8
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.34 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['e']-->5
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.35 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['w']-->3
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.36 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['o']-->27
+   --['i']-->51
+   --['0'..'9']-->54
+   --['s']-->54
+   --['n']-->54
+   --['c']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.37 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['a']-->28
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.38 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['x']-->29
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.39 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['e']-->53
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.40 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['o']-->30
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.41 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['n']-->31
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.42 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['a']-->32
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.43 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['n']-->33
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.44 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['l']-->34
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.45 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['a']-->35
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.46 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['r']-->42
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.47 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['i']-->43
+   --['0'..'9']-->54
+   --['s']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.48 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['c']-->44
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.49 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['r']-->45
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.50 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['o']-->47
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.51 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['r']-->48
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.52 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['d']-->49
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.53 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['p']-->52
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+STATE.54 * begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   --['0'..'9']-->54
+   --['s']-->54
+   --['i']-->54
+   --['n']-->54
+   --['c']-->54
+   --['o']-->54
+   --['t']-->54
+   --['a']-->54
+   --['l']-->54
+   --['q']-->54
+   --['r']-->54
+   --['e']-->54
+   --['x']-->54
+   --['p']-->54
+   --['d']-->54
+   --['w']-->54
+   --['b']-->54
+   --['A'..'Z''_''f'..'h''j'..'k''m''u'..'v''y'..'z']-->54
+
+
+THE DFA TRANSITION TABLE:
+
+
+   1:    9   10   11   12   13   14   15   16   17   18   19   20   24   36   37   38   39   40   46   50   54   54   54   54   54   54   54   54 ----       
+   2:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Fun}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Fun;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+   3:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+       {YACC_RepDraw}
+       TTokenAttributes(AInfo).Token := YACC_RepDraw;
+end;
+   4:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+       {YACC_DRAW}
+       TTokenAttributes(AInfo).Token := YACC_Draw;
+end;
+   5:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+       {YACC_Circle}
+       TTokenAttributes(AInfo).Token := YACC_Circle;
+end;
+   6:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+       {YACC_Line}
+       TTokenAttributes(AInfo).Token := YACC_Line;
+end;
+   7:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+       {YACC_Box}
+       TTokenAttributes(AInfo).Token := YACC_Box;
+end;
+   8:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+       {YACC_Point}
+       TTokenAttributes(AInfo).Token := YACC_Point;
+end;
+   9:    9 ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   21       var
+     Value: Real;
+     Code: Integer;
+begin
+     {YACC_Number}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Number;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        Val( Lexeme, Value, Code)
+        end;
+end;
+  10:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   25   54   54   54   26   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  11: ---- ----   11 ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+     {BLANK}
+     AReturn := False;
+end;
+  12: ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+     {YACC_Assign}
+     TTokenAttributes(AInfo).Token := YACC_Assign;
+end;
+  13: ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+     {YACC_Plus}
+     TTokenAttributes(AInfo).Token := YACC_Plus;
+end;
+  14: ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+     {YACC_Minus}
+     TTokenAttributes(AInfo).Token := YACC_Minus;
+end;
+  15: ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+     {YACC_Plus}
+     TTokenAttributes(AInfo).Token := YACC_Div;
+end;
+  16: ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+     {YACC_Mul}
+     TTokenAttributes(AInfo).Token := YACC_Mul;
+end;
+  17: ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+     {YACC_LB}
+     TTokenAttributes(AInfo).Token := YACC_LB;
+end;
+  18: ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+     {YACC_RB}
+     TTokenAttributes(AInfo).Token := YACC_RB;
+end;
+  19: ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+       {YACC_Coma}
+       TTokenAttributes(AInfo).Token := YACC_Coma;
+end;
+  20: ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       begin
+       {YACC_SColen}
+       TTokenAttributes(AInfo).Token := YACC_SColen;
+end;
+  21:   23 ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       
+  22:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54    2   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Fun}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Fun;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  23:   23 ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----       var
+     Value: Real;
+     Code: Integer;
+begin
+     {YACC_Number}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Number;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        Val( Lexeme, Value, Code)
+        end;
+end;
+  24:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   41    2   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  25:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54    2   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  26:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   22   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  27:   54    2 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  28:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54    2   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  29:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54    2   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  30:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54    7   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  31:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54    6   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  32:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54    4   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  33:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54    8   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  34:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54    5   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  35:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54    3   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  36:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   51   54   27   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  37:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   28   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  38:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   29   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  39:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   53   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  40:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   30   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  41:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   31   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  42:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   32   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  43:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   33   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  44:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   34   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  45:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   35   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  46:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   42   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  47:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   43   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  48:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   44   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  49:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   45   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  50:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   47   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  51:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   48   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  52:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   49   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  53:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   52   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+  54:   54   54 ---- ---- ---- ---- ---- ---- ---- ---- ---- ----   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54   54 ----       begin
+     {YACC_Id}
+     with TTokenAttributes(AInfo)
+     do begin
+        Token := YACC_Id;
+        LexemeLen := ALex^.GetMatchedLexeme(Lexeme, MAXLEXEMESTRLENGTH);
+        Lexeme[LexemeLen] := #0;
+        end;
+end;
+
+   0 : ----
+   1 :    3
+   2 :    3
+   3 :    3
+   4 :    3
+   5 :    3
+   6 :    3
+   7 :    3
+   8 :    3
+   9 :    3
+  10 :    3
+  11 :    3
+  12 :    3
+  13 :    3
+  14 :    3
+  15 :    3
+  16 :    3
+  17 :    3
+  18 :    3
+  19 :    3
+  20 :    3
+  21 :    3
+  22 :    3
+  23 :    3
+  24 :    3
+  25 :    3
+  26 :    3
+  27 :    3
+  28 :    3
+  29 :    3
+  30 :    3
+  31 :    3
+  32 :    3  ~ ~
+  33 : ----  ~!~
+  34 : ----  ~"~
+  35 : ----  ~#~
+  36 : ----  ~$~
+  37 : ----  ~%~
+  38 : ----  ~&~
+  39 : ----  ~'~
+  40 :    9  ~(~
+  41 :   10  ~)~
+  42 :    8  ~*~
+  43 :    5  ~+~
+  44 :   11  ~,~
+  45 :    6  ~-~
+  46 :   29  ~.~
+  47 :    7  ~/~
+  48 :    1  ~0~
+  49 :    1  ~1~
+  50 :    1  ~2~
+  51 :    1  ~3~
+  52 :    1  ~4~
+  53 :    1  ~5~
+  54 :    1  ~6~
+  55 :    1  ~7~
+  56 :    1  ~8~
+  57 :    1  ~9~
+  58 : ----  ~:~
+  59 :   12  ~;~
+  60 : ----  ~<~
+  61 :    4  ~=~
+  62 : ----  ~>~
+  63 : ----  ~?~
+  64 : ----  ~@~
+  65 :   28  ~A~
+  66 :   28  ~B~
+  67 :   28  ~C~
+  68 :   28  ~D~
+  69 :   28  ~E~
+  70 :   28  ~F~
+  71 :   28  ~G~
+  72 :   28  ~H~
+  73 :   28  ~I~
+  74 :   28  ~J~
+  75 :   28  ~K~
+  76 :   28  ~L~
+  77 :   28  ~M~
+  78 :   28  ~N~
+  79 :   28  ~O~
+  80 :   28  ~P~
+  81 :   28  ~Q~
+  82 :   28  ~R~
+  83 :   28  ~S~
+  84 :   28  ~T~
+  85 :   28  ~U~
+  86 :   28  ~V~
+  87 :   28  ~W~
+  88 :   28  ~X~
+  89 :   28  ~Y~
+  90 :   28  ~Z~
+  91 : ----  ~[~
+  92 : ----  ~\~
+  93 : ----  ~]~
+  94 : ----  ~^~
+  95 :   28  ~_~
+  96 : ----  ~`~
+  97 :   24  ~a~
+  98 :   18  ~b~
+  99 :   14  ~c~
+ 100 :   19  ~d~
+ 101 :   16  ~e~
+ 102 :   28  ~f~
+ 103 :   28  ~g~
+ 104 :   28  ~h~
+ 105 :   21  ~i~
+ 106 :   28  ~j~
+ 107 :   28  ~k~
+ 108 :   13  ~l~
+ 109 :   28  ~m~
+ 110 :   22  ~n~
+ 111 :   23  ~o~
+ 112 :   20  ~p~
+ 113 :   25  ~q~
+ 114 :   17  ~r~
+ 115 :    2  ~s~
+ 116 :   15  ~t~
+ 117 :   28  ~u~
+ 118 :   28  ~v~
+ 119 :   27  ~w~
+ 120 :   26  ~x~
+ 121 :   28  ~y~
+ 122 :   28  ~z~
+ 123 : ----  ~{~
+ 124 : ----  ~|~
+ 125 : ----  ~}~
+ 126 : ----  ~~~
+ 127 : ----  ~~
+ 128 : ----  ~Ä~
+ 129 : ----  ~Å~
+ 130 : ----  ~Ç~
+ 131 : ----  ~É~
+ 132 : ----  ~Ñ~
+ 133 : ----  ~Ö~
+ 134 : ----  ~Ü~
+ 135 : ----  ~á~
+ 136 : ----  ~à~
+ 137 : ----  ~â~
+ 138 : ----  ~ä~
+ 139 : ----  ~ã~
+ 140 : ----  ~å~
+ 141 : ----  ~ç~
+ 142 : ----  ~é~
+ 143 : ----  ~è~
+ 144 : ----  ~ê~
+ 145 : ----  ~ë~
+ 146 : ----  ~í~
+ 147 : ----  ~ì~
+ 148 : ----  ~î~
+ 149 : ----  ~ï~
+ 150 : ----  ~ñ~
+ 151 : ----  ~ó~
+ 152 : ----  ~ò~
+ 153 : ----  ~ô~
+ 154 : ----  ~ö~
+ 155 : ----  ~õ~
+ 156 : ----  ~ú~
+ 157 : ----  ~ù~
+ 158 : ----  ~û~
+ 159 : ----  ~ü~
+ 160 : ----  ~†~
+ 161 : ----  ~°~
+ 162 : ----  ~¢~
+ 163 : ----  ~£~
+ 164 : ----  ~§~
+ 165 : ----  ~•~
+ 166 : ----  ~¶~
+ 167 : ----  ~ß~
+ 168 : ----  ~®~
+ 169 : ----  ~©~
+ 170 : ----  ~™~
+ 171 : ----  ~´~
+ 172 : ----  ~¨~
+ 173 : ----  ~≠~
+ 174 : ----  ~Æ~
+ 175 : ----  ~Ø~
+ 176 : ----  ~∞~
+ 177 : ----  ~±~
+ 178 : ----  ~≤~
+ 179 : ----  ~≥~
+ 180 : ----  ~¥~
+ 181 : ----  ~µ~
+ 182 : ----  ~∂~
+ 183 : ----  ~∑~
+ 184 : ----  ~∏~
+ 185 : ----  ~π~
+ 186 : ----  ~∫~
+ 187 : ----  ~ª~
+ 188 : ----  ~º~
+ 189 : ----  ~Ω~
+ 190 : ----  ~æ~
+ 191 : ----  ~ø~
+ 192 : ----  ~¿~
+ 193 : ----  ~¡~
+ 194 : ----  ~¬~
+ 195 : ----  ~√~
+ 196 : ----  ~ƒ~
+ 197 : ----  ~≈~
+ 198 : ----  ~∆~
+ 199 : ----  ~«~
+ 200 : ----  ~»~
+ 201 : ----  ~…~
+ 202 : ----  ~ ~
+ 203 : ----  ~À~
+ 204 : ----  ~Ã~
+ 205 : ----  ~Õ~
+ 206 : ----  ~Œ~
+ 207 : ----  ~œ~
+ 208 : ----  ~–~
+ 209 : ----  ~—~
+ 210 : ----  ~“~
+ 211 : ----  ~”~
+ 212 : ----  ~‘~
+ 213 : ----  ~’~
+ 214 : ----  ~÷~
+ 215 : ----  ~◊~
+ 216 : ----  ~ÿ~
+ 217 : ----  ~Ÿ~
+ 218 : ----  ~⁄~
+ 219 : ----  ~€~
+ 220 : ----  ~‹~
+ 221 : ----  ~›~
+ 222 : ----  ~ﬁ~
+ 223 : ----  ~ﬂ~
+ 224 : ----  ~‡~
+ 225 : ----  ~·~
+ 226 : ----  ~‚~
+ 227 : ----  ~„~
+ 228 : ----  ~‰~
+ 229 : ----  ~Â~
+ 230 : ----  ~Ê~
+ 231 : ----  ~Á~
+ 232 : ----  ~Ë~
+ 233 : ----  ~È~
+ 234 : ----  ~Í~
+ 235 : ----  ~Î~
+ 236 : ----  ~Ï~
+ 237 : ----  ~Ì~
+ 238 : ----  ~Ó~
+ 239 : ----  ~Ô~
+ 240 : ----  ~~
+ 241 : ----  ~Ò~
+ 242 : ----  ~Ú~
+ 243 : ----  ~Û~
+ 244 : ----  ~Ù~
+ 245 : ----  ~ı~
+ 246 : ----  ~ˆ~
+ 247 : ----  ~˜~
+ 248 : ----  ~¯~
+ 249 : ----  ~˘~
+ 250 : ----  ~˙~
+ 251 : ----  ~˚~
+ 252 : ----  ~¸~
+ 253 : ----  ~˝~
+ 254 : ----  ~˛~
+ 255 : ----  ~ˇ~
+
+START STATE     = 1
+STATES COUNT    = 54
+ALPHABET SIZE   = 29
+
+
+
+

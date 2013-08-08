@@ -1,0 +1,1097 @@
+   1) s -> stmts
+   2) stmts -> stmts SColen stmt
+   3) stmts -> stmt
+   4) stmt -> def_stmt
+   5) stmt -> drw_stmt
+   6) def_stmt -> Id Assign exp
+   7) def_stmt -> Id Assign cfigure
+   8) drw_stmt -> Draw cfigure
+   9) drw_stmt -> RepDraw exp Id
+  10) drw_stmt -> RepDraw exp cfigure
+  11) drw_stmt -> Draw Id
+  12) cfigure -> LB figures SColen RB
+  13) figures -> figures SColen figure
+  14) figures -> figure
+  15) figure -> Id Assign exp
+  16) figure -> drw_stmt
+  17) figure -> Circle exp Coma exp Coma exp
+  18) figure -> Box exp Coma exp Coma exp Coma exp
+  19) figure -> Line exp Coma exp Coma exp Coma exp
+  20) figure -> Point exp Coma exp
+  21) exp -> exp Plus trm
+  22) exp -> exp Minus trm
+  23) exp -> trm
+  24) trm -> trm Mul fct
+  25) trm -> trm Div fct
+  26) trm -> fct
+  27) fct -> LB exp RB
+  28) fct -> Minus fct
+  29) fct -> Number
+  30) fct -> Id
+  31) fct -> Fun LB exp RB
+
+Ne Set = 
+Terminals = SColen  Id  Assign  Draw  RepDraw  LB  RB  Circle  Coma  Box  Line  Point  Plus  Minus  Mul  Div  Number  Fun  EOF  
+Nonterminals = s  stmts  stmt  def_stmt  drw_stmt  cfigure  figures  figure  exp  trm  fct  
+Terminate symbol = EOF
+Empty symbol = e
+
+
+CLOSURE [1]
+THE KERNEL:
+s ->.stmts  [ EOF ]
+THE ITEMS:
+s ->.stmts  [ EOF ] GOTO(2)
+stmts ->.stmts SColen stmt  [ EOF SColen ] GOTO(2)
+stmts ->.stmt  [ EOF SColen ] GOTO(3)
+stmt ->.def_stmt  [ EOF SColen ] GOTO(4)
+stmt ->.drw_stmt  [ EOF SColen ] GOTO(5)
+def_stmt ->.Id Assign exp  [ EOF SColen ] GOTO(6)
+def_stmt ->.Id Assign cfigure  [ EOF SColen ] GOTO(6)
+drw_stmt ->.Draw cfigure  [ EOF SColen ] GOTO(7)
+drw_stmt ->.RepDraw exp Id  [ EOF SColen ] GOTO(8)
+drw_stmt ->.RepDraw exp cfigure  [ EOF SColen ] GOTO(8)
+drw_stmt ->.Draw Id  [ EOF SColen ] GOTO(7)
+
+
+CLOSURE [2]
+THE KERNEL:
+s -> stmts.  [ EOF ]
+stmts -> stmts.SColen stmt  [ EOF SColen ]
+THE ITEMS:
+s -> stmts.  [ EOF ]  REDUCE[1]
+stmts -> stmts.SColen stmt  [ EOF SColen ] GOTO(9)
+
+
+CLOSURE [3]
+THE KERNEL:
+stmts -> stmt.  [ EOF SColen ]
+THE ITEMS:
+stmts -> stmt.  [ EOF SColen ]  REDUCE[3]
+
+
+CLOSURE [4]
+THE KERNEL:
+stmt -> def_stmt.  [ EOF SColen ]
+THE ITEMS:
+stmt -> def_stmt.  [ EOF SColen ]  REDUCE[4]
+
+
+CLOSURE [5]
+THE KERNEL:
+stmt -> drw_stmt.  [ EOF SColen ]
+THE ITEMS:
+stmt -> drw_stmt.  [ EOF SColen ]  REDUCE[5]
+
+
+CLOSURE [6]
+THE KERNEL:
+def_stmt -> Id.Assign exp  [ EOF SColen ]
+def_stmt -> Id.Assign cfigure  [ EOF SColen ]
+THE ITEMS:
+def_stmt -> Id.Assign exp  [ EOF SColen ] GOTO(10)
+def_stmt -> Id.Assign cfigure  [ EOF SColen ] GOTO(10)
+
+
+CLOSURE [7]
+THE KERNEL:
+drw_stmt -> Draw.cfigure  [ EOF SColen ]
+drw_stmt -> Draw.Id  [ EOF SColen ]
+THE ITEMS:
+drw_stmt -> Draw.cfigure  [ EOF SColen ] GOTO(11)
+drw_stmt -> Draw.Id  [ EOF SColen ] GOTO(12)
+cfigure ->.LB figures SColen RB  [ EOF SColen ] GOTO(13)
+
+
+CLOSURE [8]
+THE KERNEL:
+drw_stmt -> RepDraw.exp Id  [ EOF SColen ]
+drw_stmt -> RepDraw.exp cfigure  [ EOF SColen ]
+THE ITEMS:
+drw_stmt -> RepDraw.exp Id  [ EOF SColen ] GOTO(14)
+drw_stmt -> RepDraw.exp cfigure  [ EOF SColen ] GOTO(14)
+exp ->.exp Plus trm  [ Id LB Plus Minus ] GOTO(14)
+exp ->.exp Minus trm  [ Id LB Plus Minus ] GOTO(14)
+exp ->.trm  [ Id LB Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Id LB Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Id LB Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Id LB Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Id LB Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Id LB Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Id LB Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Id LB Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Id LB Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [9]
+THE KERNEL:
+stmts -> stmts SColen.stmt  [ EOF SColen ]
+THE ITEMS:
+stmts -> stmts SColen.stmt  [ EOF SColen ] GOTO(22)
+stmt ->.def_stmt  [ EOF SColen ] GOTO(4)
+stmt ->.drw_stmt  [ EOF SColen ] GOTO(5)
+def_stmt ->.Id Assign exp  [ EOF SColen ] GOTO(6)
+def_stmt ->.Id Assign cfigure  [ EOF SColen ] GOTO(6)
+drw_stmt ->.Draw cfigure  [ EOF SColen ] GOTO(7)
+drw_stmt ->.RepDraw exp Id  [ EOF SColen ] GOTO(8)
+drw_stmt ->.RepDraw exp cfigure  [ EOF SColen ] GOTO(8)
+drw_stmt ->.Draw Id  [ EOF SColen ] GOTO(7)
+
+
+CLOSURE [10]
+THE KERNEL:
+def_stmt -> Id Assign.exp  [ EOF SColen ]
+def_stmt -> Id Assign.cfigure  [ EOF SColen ]
+THE ITEMS:
+def_stmt -> Id Assign.exp  [ EOF SColen ] GOTO(23)
+def_stmt -> Id Assign.cfigure  [ EOF SColen ] GOTO(24)
+exp ->.exp Plus trm  [ EOF SColen Plus Minus ] GOTO(23)
+exp ->.exp Minus trm  [ EOF SColen Plus Minus ] GOTO(23)
+exp ->.trm  [ EOF SColen Plus Minus ] GOTO(15)
+cfigure ->.LB figures SColen RB  [ EOF SColen ] GOTO(25)
+trm ->.trm Mul fct  [ EOF SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ EOF SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ EOF SColen Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ EOF SColen Plus Minus Mul Div ] GOTO(25)
+fct ->.Minus fct  [ EOF SColen Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ EOF SColen Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ EOF SColen Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ EOF SColen Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [11]
+THE KERNEL:
+drw_stmt -> Draw cfigure.  [ EOF SColen ]
+THE ITEMS:
+drw_stmt -> Draw cfigure.  [ EOF SColen ]  REDUCE[8]
+
+
+CLOSURE [12]
+THE KERNEL:
+drw_stmt -> Draw Id.  [ EOF SColen ]
+THE ITEMS:
+drw_stmt -> Draw Id.  [ EOF SColen ]  REDUCE[11]
+
+
+CLOSURE [13]
+THE KERNEL:
+cfigure -> LB.figures SColen RB  [ EOF SColen ]
+THE ITEMS:
+cfigure -> LB.figures SColen RB  [ EOF SColen ] GOTO(26)
+figures ->.figures SColen figure  [ SColen ] GOTO(26)
+figures ->.figure  [ SColen ] GOTO(27)
+figure ->.Id Assign exp  [ SColen ] GOTO(28)
+figure ->.drw_stmt  [ SColen ] GOTO(29)
+figure ->.Circle exp Coma exp Coma exp  [ SColen ] GOTO(30)
+figure ->.Box exp Coma exp Coma exp Coma exp  [ SColen ] GOTO(31)
+figure ->.Line exp Coma exp Coma exp Coma exp  [ SColen ] GOTO(32)
+figure ->.Point exp Coma exp  [ SColen ] GOTO(33)
+drw_stmt ->.Draw cfigure  [ SColen ] GOTO(7)
+drw_stmt ->.RepDraw exp Id  [ SColen ] GOTO(8)
+drw_stmt ->.RepDraw exp cfigure  [ SColen ] GOTO(8)
+drw_stmt ->.Draw Id  [ SColen ] GOTO(7)
+
+
+CLOSURE [14]
+THE KERNEL:
+drw_stmt -> RepDraw exp.Id  [ EOF SColen ]
+drw_stmt -> RepDraw exp.cfigure  [ EOF SColen ]
+exp -> exp.Plus trm  [ Id LB Plus Minus ]
+exp -> exp.Minus trm  [ Id LB Plus Minus ]
+THE ITEMS:
+drw_stmt -> RepDraw exp.Id  [ EOF SColen ] GOTO(34)
+drw_stmt -> RepDraw exp.cfigure  [ EOF SColen ] GOTO(35)
+exp -> exp.Plus trm  [ Id LB Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Id LB Plus Minus ] GOTO(37)
+cfigure ->.LB figures SColen RB  [ EOF SColen ] GOTO(13)
+
+
+CLOSURE [15]
+THE KERNEL:
+exp -> trm.  [ Id LB Plus Minus EOF SColen RB Coma ]
+trm -> trm.Mul fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+trm -> trm.Div fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+exp -> trm.  [ Id LB Plus Minus EOF SColen RB Coma ]  REDUCE[23]
+trm -> trm.Mul fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(38)
+trm -> trm.Div fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(39)
+
+
+CLOSURE [16]
+THE KERNEL:
+trm -> fct.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+trm -> fct.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]  REDUCE[26]
+
+
+CLOSURE [17]
+THE KERNEL:
+fct -> LB.exp RB  [ Id LB Plus Minus Mul Div RB EOF SColen Coma ]
+THE ITEMS:
+fct -> LB.exp RB  [ Id LB Plus Minus Mul Div RB EOF SColen Coma ] GOTO(40)
+exp ->.exp Plus trm  [ RB Plus Minus ] GOTO(40)
+exp ->.exp Minus trm  [ RB Plus Minus ] GOTO(40)
+exp ->.trm  [ RB Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ RB Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ RB Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ RB Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ RB Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ RB Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ RB Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ RB Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ RB Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [18]
+THE KERNEL:
+fct -> Minus.fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+fct -> Minus.fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(41)
+fct ->.LB exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(17)
+fct ->.Minus fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(18)
+fct ->.Number  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(19)
+fct ->.Id  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(20)
+fct ->.Fun LB exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(21)
+
+
+CLOSURE [19]
+THE KERNEL:
+fct -> Number.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+fct -> Number.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]  REDUCE[29]
+
+
+CLOSURE [20]
+THE KERNEL:
+fct -> Id.  [ Id LB Plus Minus Mul Div EOF SColen Coma RB ]
+THE ITEMS:
+fct -> Id.  [ Id LB Plus Minus Mul Div EOF SColen Coma RB ]  REDUCE[30]
+
+
+CLOSURE [21]
+THE KERNEL:
+fct -> Fun.LB exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+fct -> Fun.LB exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(42)
+
+
+CLOSURE [22]
+THE KERNEL:
+stmts -> stmts SColen stmt.  [ EOF SColen ]
+THE ITEMS:
+stmts -> stmts SColen stmt.  [ EOF SColen ]  REDUCE[2]
+
+
+CLOSURE [23]
+THE KERNEL:
+def_stmt -> Id Assign exp.  [ EOF SColen ]
+exp -> exp.Plus trm  [ EOF SColen Plus Minus ]
+exp -> exp.Minus trm  [ EOF SColen Plus Minus ]
+THE ITEMS:
+def_stmt -> Id Assign exp.  [ EOF SColen ]  REDUCE[6]
+exp -> exp.Plus trm  [ EOF SColen Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ EOF SColen Plus Minus ] GOTO(37)
+
+
+CLOSURE [24]
+THE KERNEL:
+def_stmt -> Id Assign cfigure.  [ EOF SColen ]
+THE ITEMS:
+def_stmt -> Id Assign cfigure.  [ EOF SColen ]  REDUCE[7]
+
+
+CLOSURE [25]
+THE KERNEL:
+cfigure -> LB.figures SColen RB  [ EOF SColen ]
+fct -> LB.exp RB  [ EOF SColen Plus Minus Mul Div ]
+THE ITEMS:
+cfigure -> LB.figures SColen RB  [ EOF SColen ] GOTO(26)
+fct -> LB.exp RB  [ EOF SColen Plus Minus Mul Div ] GOTO(40)
+figures ->.figures SColen figure  [ SColen ] GOTO(26)
+figures ->.figure  [ SColen ] GOTO(27)
+exp ->.exp Plus trm  [ RB Plus Minus ] GOTO(40)
+exp ->.exp Minus trm  [ RB Plus Minus ] GOTO(40)
+exp ->.trm  [ RB Plus Minus ] GOTO(15)
+figure ->.Id Assign exp  [ SColen ] GOTO(43)
+figure ->.drw_stmt  [ SColen ] GOTO(29)
+figure ->.Circle exp Coma exp Coma exp  [ SColen ] GOTO(30)
+figure ->.Box exp Coma exp Coma exp Coma exp  [ SColen ] GOTO(31)
+figure ->.Line exp Coma exp Coma exp Coma exp  [ SColen ] GOTO(32)
+figure ->.Point exp Coma exp  [ SColen ] GOTO(33)
+trm ->.trm Mul fct  [ RB Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ RB Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ RB Plus Minus Mul Div ] GOTO(16)
+drw_stmt ->.Draw cfigure  [ SColen ] GOTO(7)
+drw_stmt ->.RepDraw exp Id  [ SColen ] GOTO(8)
+drw_stmt ->.RepDraw exp cfigure  [ SColen ] GOTO(8)
+drw_stmt ->.Draw Id  [ SColen ] GOTO(7)
+fct ->.LB exp RB  [ RB Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ RB Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ RB Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ RB Plus Minus Mul Div ] GOTO(43)
+fct ->.Fun LB exp RB  [ RB Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [26]
+THE KERNEL:
+cfigure -> LB figures.SColen RB  [ EOF SColen ]
+figures -> figures.SColen figure  [ SColen ]
+THE ITEMS:
+cfigure -> LB figures.SColen RB  [ EOF SColen ] GOTO(44)
+figures -> figures.SColen figure  [ SColen ] GOTO(44)
+
+
+CLOSURE [27]
+THE KERNEL:
+figures -> figure.  [ SColen ]
+THE ITEMS:
+figures -> figure.  [ SColen ]  REDUCE[14]
+
+
+CLOSURE [28]
+THE KERNEL:
+figure -> Id.Assign exp  [ SColen ]
+THE ITEMS:
+figure -> Id.Assign exp  [ SColen ] GOTO(45)
+
+
+CLOSURE [29]
+THE KERNEL:
+figure -> drw_stmt.  [ SColen ]
+THE ITEMS:
+figure -> drw_stmt.  [ SColen ]  REDUCE[16]
+
+
+CLOSURE [30]
+THE KERNEL:
+figure -> Circle.exp Coma exp Coma exp  [ SColen ]
+THE ITEMS:
+figure -> Circle.exp Coma exp Coma exp  [ SColen ] GOTO(46)
+exp ->.exp Plus trm  [ Coma Plus Minus ] GOTO(46)
+exp ->.exp Minus trm  [ Coma Plus Minus ] GOTO(46)
+exp ->.trm  [ Coma Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Coma Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Coma Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Coma Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Coma Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [31]
+THE KERNEL:
+figure -> Box.exp Coma exp Coma exp Coma exp  [ SColen ]
+THE ITEMS:
+figure -> Box.exp Coma exp Coma exp Coma exp  [ SColen ] GOTO(47)
+exp ->.exp Plus trm  [ Coma Plus Minus ] GOTO(47)
+exp ->.exp Minus trm  [ Coma Plus Minus ] GOTO(47)
+exp ->.trm  [ Coma Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Coma Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Coma Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Coma Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Coma Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [32]
+THE KERNEL:
+figure -> Line.exp Coma exp Coma exp Coma exp  [ SColen ]
+THE ITEMS:
+figure -> Line.exp Coma exp Coma exp Coma exp  [ SColen ] GOTO(48)
+exp ->.exp Plus trm  [ Coma Plus Minus ] GOTO(48)
+exp ->.exp Minus trm  [ Coma Plus Minus ] GOTO(48)
+exp ->.trm  [ Coma Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Coma Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Coma Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Coma Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Coma Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [33]
+THE KERNEL:
+figure -> Point.exp Coma exp  [ SColen ]
+THE ITEMS:
+figure -> Point.exp Coma exp  [ SColen ] GOTO(49)
+exp ->.exp Plus trm  [ Coma Plus Minus ] GOTO(49)
+exp ->.exp Minus trm  [ Coma Plus Minus ] GOTO(49)
+exp ->.trm  [ Coma Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Coma Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Coma Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Coma Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Coma Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [34]
+THE KERNEL:
+drw_stmt -> RepDraw exp Id.  [ EOF SColen ]
+THE ITEMS:
+drw_stmt -> RepDraw exp Id.  [ EOF SColen ]  REDUCE[9]
+
+
+CLOSURE [35]
+THE KERNEL:
+drw_stmt -> RepDraw exp cfigure.  [ EOF SColen ]
+THE ITEMS:
+drw_stmt -> RepDraw exp cfigure.  [ EOF SColen ]  REDUCE[10]
+
+
+CLOSURE [36]
+THE KERNEL:
+exp -> exp Plus.trm  [ Id LB Plus Minus EOF SColen RB Coma ]
+THE ITEMS:
+exp -> exp Plus.trm  [ Id LB Plus Minus EOF SColen RB Coma ] GOTO(50)
+trm ->.trm Mul fct  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(50)
+trm ->.trm Div fct  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(50)
+trm ->.fct  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(18)
+fct ->.Number  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(19)
+fct ->.Id  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(21)
+
+
+CLOSURE [37]
+THE KERNEL:
+exp -> exp Minus.trm  [ Id LB Plus Minus EOF SColen RB Coma ]
+THE ITEMS:
+exp -> exp Minus.trm  [ Id LB Plus Minus EOF SColen RB Coma ] GOTO(51)
+trm ->.trm Mul fct  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(51)
+trm ->.trm Div fct  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(51)
+trm ->.fct  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(18)
+fct ->.Number  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(19)
+fct ->.Id  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Id LB Plus Minus EOF SColen RB Coma Mul Div ] GOTO(21)
+
+
+CLOSURE [38]
+THE KERNEL:
+trm -> trm Mul.fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+trm -> trm Mul.fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(52)
+fct ->.LB exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(17)
+fct ->.Minus fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(18)
+fct ->.Number  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(19)
+fct ->.Id  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(20)
+fct ->.Fun LB exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(21)
+
+
+CLOSURE [39]
+THE KERNEL:
+trm -> trm Div.fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+trm -> trm Div.fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(53)
+fct ->.LB exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(17)
+fct ->.Minus fct  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(18)
+fct ->.Number  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(19)
+fct ->.Id  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(20)
+fct ->.Fun LB exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(21)
+
+
+CLOSURE [40]
+THE KERNEL:
+fct -> LB exp.RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+exp -> exp.Plus trm  [ RB Plus Minus ]
+exp -> exp.Minus trm  [ RB Plus Minus ]
+THE ITEMS:
+fct -> LB exp.RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(54)
+exp -> exp.Plus trm  [ RB Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ RB Plus Minus ] GOTO(37)
+
+
+CLOSURE [41]
+THE KERNEL:
+fct -> Minus fct.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+fct -> Minus fct.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]  REDUCE[28]
+
+
+CLOSURE [42]
+THE KERNEL:
+fct -> Fun LB.exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+fct -> Fun LB.exp RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(55)
+exp ->.exp Plus trm  [ RB Plus Minus ] GOTO(55)
+exp ->.exp Minus trm  [ RB Plus Minus ] GOTO(55)
+exp ->.trm  [ RB Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ RB Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ RB Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ RB Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ RB Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ RB Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ RB Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ RB Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ RB Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [43]
+THE KERNEL:
+figure -> Id.Assign exp  [ SColen ]
+fct -> Id.  [ RB Plus Minus Mul Div ]
+THE ITEMS:
+figure -> Id.Assign exp  [ SColen ] GOTO(45)
+fct -> Id.  [ RB Plus Minus Mul Div ]  REDUCE[30]
+
+
+CLOSURE [44]
+THE KERNEL:
+cfigure -> LB figures SColen.RB  [ EOF SColen ]
+figures -> figures SColen.figure  [ SColen ]
+THE ITEMS:
+cfigure -> LB figures SColen.RB  [ EOF SColen ] GOTO(56)
+figures -> figures SColen.figure  [ SColen ] GOTO(57)
+figure ->.Id Assign exp  [ SColen ] GOTO(28)
+figure ->.drw_stmt  [ SColen ] GOTO(29)
+figure ->.Circle exp Coma exp Coma exp  [ SColen ] GOTO(30)
+figure ->.Box exp Coma exp Coma exp Coma exp  [ SColen ] GOTO(31)
+figure ->.Line exp Coma exp Coma exp Coma exp  [ SColen ] GOTO(32)
+figure ->.Point exp Coma exp  [ SColen ] GOTO(33)
+drw_stmt ->.Draw cfigure  [ SColen ] GOTO(7)
+drw_stmt ->.RepDraw exp Id  [ SColen ] GOTO(8)
+drw_stmt ->.RepDraw exp cfigure  [ SColen ] GOTO(8)
+drw_stmt ->.Draw Id  [ SColen ] GOTO(7)
+
+
+CLOSURE [45]
+THE KERNEL:
+figure -> Id Assign.exp  [ SColen ]
+THE ITEMS:
+figure -> Id Assign.exp  [ SColen ] GOTO(58)
+exp ->.exp Plus trm  [ SColen Plus Minus ] GOTO(58)
+exp ->.exp Minus trm  [ SColen Plus Minus ] GOTO(58)
+exp ->.trm  [ SColen Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ SColen Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ SColen Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ SColen Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ SColen Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [46]
+THE KERNEL:
+figure -> Circle exp.Coma exp Coma exp  [ SColen ]
+exp -> exp.Plus trm  [ Coma Plus Minus ]
+exp -> exp.Minus trm  [ Coma Plus Minus ]
+THE ITEMS:
+figure -> Circle exp.Coma exp Coma exp  [ SColen ] GOTO(59)
+exp -> exp.Plus trm  [ Coma Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Coma Plus Minus ] GOTO(37)
+
+
+CLOSURE [47]
+THE KERNEL:
+figure -> Box exp.Coma exp Coma exp Coma exp  [ SColen ]
+exp -> exp.Plus trm  [ Coma Plus Minus ]
+exp -> exp.Minus trm  [ Coma Plus Minus ]
+THE ITEMS:
+figure -> Box exp.Coma exp Coma exp Coma exp  [ SColen ] GOTO(60)
+exp -> exp.Plus trm  [ Coma Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Coma Plus Minus ] GOTO(37)
+
+
+CLOSURE [48]
+THE KERNEL:
+figure -> Line exp.Coma exp Coma exp Coma exp  [ SColen ]
+exp -> exp.Plus trm  [ Coma Plus Minus ]
+exp -> exp.Minus trm  [ Coma Plus Minus ]
+THE ITEMS:
+figure -> Line exp.Coma exp Coma exp Coma exp  [ SColen ] GOTO(61)
+exp -> exp.Plus trm  [ Coma Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Coma Plus Minus ] GOTO(37)
+
+
+CLOSURE [49]
+THE KERNEL:
+figure -> Point exp.Coma exp  [ SColen ]
+exp -> exp.Plus trm  [ Coma Plus Minus ]
+exp -> exp.Minus trm  [ Coma Plus Minus ]
+THE ITEMS:
+figure -> Point exp.Coma exp  [ SColen ] GOTO(62)
+exp -> exp.Plus trm  [ Coma Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Coma Plus Minus ] GOTO(37)
+
+
+CLOSURE [50]
+THE KERNEL:
+exp -> exp Plus trm.  [ Id LB Plus Minus EOF SColen RB Coma ]
+trm -> trm.Mul fct  [ Id LB Plus Minus EOF SColen Mul Div RB Coma ]
+trm -> trm.Div fct  [ Id LB Plus Minus EOF SColen Mul Div RB Coma ]
+THE ITEMS:
+exp -> exp Plus trm.  [ Id LB Plus Minus EOF SColen RB Coma ]  REDUCE[21]
+trm -> trm.Mul fct  [ Id LB Plus Minus EOF SColen Mul Div RB Coma ] GOTO(38)
+trm -> trm.Div fct  [ Id LB Plus Minus EOF SColen Mul Div RB Coma ] GOTO(39)
+
+
+CLOSURE [51]
+THE KERNEL:
+exp -> exp Minus trm.  [ Id LB Plus Minus EOF SColen RB Coma ]
+trm -> trm.Mul fct  [ Id LB Plus Minus EOF SColen Mul Div RB Coma ]
+trm -> trm.Div fct  [ Id LB Plus Minus EOF SColen Mul Div RB Coma ]
+THE ITEMS:
+exp -> exp Minus trm.  [ Id LB Plus Minus EOF SColen RB Coma ]  REDUCE[22]
+trm -> trm.Mul fct  [ Id LB Plus Minus EOF SColen Mul Div RB Coma ] GOTO(38)
+trm -> trm.Div fct  [ Id LB Plus Minus EOF SColen Mul Div RB Coma ] GOTO(39)
+
+
+CLOSURE [52]
+THE KERNEL:
+trm -> trm Mul fct.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+trm -> trm Mul fct.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]  REDUCE[24]
+
+
+CLOSURE [53]
+THE KERNEL:
+trm -> trm Div fct.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+trm -> trm Div fct.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]  REDUCE[25]
+
+
+CLOSURE [54]
+THE KERNEL:
+fct -> LB exp RB.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+fct -> LB exp RB.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]  REDUCE[27]
+
+
+CLOSURE [55]
+THE KERNEL:
+fct -> Fun LB exp.RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+exp -> exp.Plus trm  [ RB Plus Minus ]
+exp -> exp.Minus trm  [ RB Plus Minus ]
+THE ITEMS:
+fct -> Fun LB exp.RB  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ] GOTO(63)
+exp -> exp.Plus trm  [ RB Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ RB Plus Minus ] GOTO(37)
+
+
+CLOSURE [56]
+THE KERNEL:
+cfigure -> LB figures SColen RB.  [ EOF SColen ]
+THE ITEMS:
+cfigure -> LB figures SColen RB.  [ EOF SColen ]  REDUCE[12]
+
+
+CLOSURE [57]
+THE KERNEL:
+figures -> figures SColen figure.  [ SColen ]
+THE ITEMS:
+figures -> figures SColen figure.  [ SColen ]  REDUCE[13]
+
+
+CLOSURE [58]
+THE KERNEL:
+figure -> Id Assign exp.  [ SColen ]
+exp -> exp.Plus trm  [ SColen Plus Minus ]
+exp -> exp.Minus trm  [ SColen Plus Minus ]
+THE ITEMS:
+figure -> Id Assign exp.  [ SColen ]  REDUCE[15]
+exp -> exp.Plus trm  [ SColen Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ SColen Plus Minus ] GOTO(37)
+
+
+CLOSURE [59]
+THE KERNEL:
+figure -> Circle exp Coma.exp Coma exp  [ SColen ]
+THE ITEMS:
+figure -> Circle exp Coma.exp Coma exp  [ SColen ] GOTO(64)
+exp ->.exp Plus trm  [ Coma Plus Minus ] GOTO(64)
+exp ->.exp Minus trm  [ Coma Plus Minus ] GOTO(64)
+exp ->.trm  [ Coma Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Coma Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Coma Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Coma Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Coma Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [60]
+THE KERNEL:
+figure -> Box exp Coma.exp Coma exp Coma exp  [ SColen ]
+THE ITEMS:
+figure -> Box exp Coma.exp Coma exp Coma exp  [ SColen ] GOTO(65)
+exp ->.exp Plus trm  [ Coma Plus Minus ] GOTO(65)
+exp ->.exp Minus trm  [ Coma Plus Minus ] GOTO(65)
+exp ->.trm  [ Coma Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Coma Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Coma Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Coma Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Coma Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [61]
+THE KERNEL:
+figure -> Line exp Coma.exp Coma exp Coma exp  [ SColen ]
+THE ITEMS:
+figure -> Line exp Coma.exp Coma exp Coma exp  [ SColen ] GOTO(66)
+exp ->.exp Plus trm  [ Coma Plus Minus ] GOTO(66)
+exp ->.exp Minus trm  [ Coma Plus Minus ] GOTO(66)
+exp ->.trm  [ Coma Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Coma Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Coma Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Coma Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Coma Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [62]
+THE KERNEL:
+figure -> Point exp Coma.exp  [ SColen ]
+THE ITEMS:
+figure -> Point exp Coma.exp  [ SColen ] GOTO(67)
+exp ->.exp Plus trm  [ SColen Plus Minus ] GOTO(67)
+exp ->.exp Minus trm  [ SColen Plus Minus ] GOTO(67)
+exp ->.trm  [ SColen Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ SColen Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ SColen Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ SColen Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ SColen Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [63]
+THE KERNEL:
+fct -> Fun LB exp RB.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]
+THE ITEMS:
+fct -> Fun LB exp RB.  [ Id LB Plus Minus Mul Div EOF SColen RB Coma ]  REDUCE[31]
+
+
+CLOSURE [64]
+THE KERNEL:
+figure -> Circle exp Coma exp.Coma exp  [ SColen ]
+exp -> exp.Plus trm  [ Coma Plus Minus ]
+exp -> exp.Minus trm  [ Coma Plus Minus ]
+THE ITEMS:
+figure -> Circle exp Coma exp.Coma exp  [ SColen ] GOTO(68)
+exp -> exp.Plus trm  [ Coma Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Coma Plus Minus ] GOTO(37)
+
+
+CLOSURE [65]
+THE KERNEL:
+figure -> Box exp Coma exp.Coma exp Coma exp  [ SColen ]
+exp -> exp.Plus trm  [ Coma Plus Minus ]
+exp -> exp.Minus trm  [ Coma Plus Minus ]
+THE ITEMS:
+figure -> Box exp Coma exp.Coma exp Coma exp  [ SColen ] GOTO(69)
+exp -> exp.Plus trm  [ Coma Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Coma Plus Minus ] GOTO(37)
+
+
+CLOSURE [66]
+THE KERNEL:
+figure -> Line exp Coma exp.Coma exp Coma exp  [ SColen ]
+exp -> exp.Plus trm  [ Coma Plus Minus ]
+exp -> exp.Minus trm  [ Coma Plus Minus ]
+THE ITEMS:
+figure -> Line exp Coma exp.Coma exp Coma exp  [ SColen ] GOTO(70)
+exp -> exp.Plus trm  [ Coma Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Coma Plus Minus ] GOTO(37)
+
+
+CLOSURE [67]
+THE KERNEL:
+figure -> Point exp Coma exp.  [ SColen ]
+exp -> exp.Plus trm  [ SColen Plus Minus ]
+exp -> exp.Minus trm  [ SColen Plus Minus ]
+THE ITEMS:
+figure -> Point exp Coma exp.  [ SColen ]  REDUCE[20]
+exp -> exp.Plus trm  [ SColen Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ SColen Plus Minus ] GOTO(37)
+
+
+CLOSURE [68]
+THE KERNEL:
+figure -> Circle exp Coma exp Coma.exp  [ SColen ]
+THE ITEMS:
+figure -> Circle exp Coma exp Coma.exp  [ SColen ] GOTO(71)
+exp ->.exp Plus trm  [ SColen Plus Minus ] GOTO(71)
+exp ->.exp Minus trm  [ SColen Plus Minus ] GOTO(71)
+exp ->.trm  [ SColen Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ SColen Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ SColen Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ SColen Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ SColen Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [69]
+THE KERNEL:
+figure -> Box exp Coma exp Coma.exp Coma exp  [ SColen ]
+THE ITEMS:
+figure -> Box exp Coma exp Coma.exp Coma exp  [ SColen ] GOTO(72)
+exp ->.exp Plus trm  [ Coma Plus Minus ] GOTO(72)
+exp ->.exp Minus trm  [ Coma Plus Minus ] GOTO(72)
+exp ->.trm  [ Coma Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Coma Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Coma Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Coma Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Coma Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [70]
+THE KERNEL:
+figure -> Line exp Coma exp Coma.exp Coma exp  [ SColen ]
+THE ITEMS:
+figure -> Line exp Coma exp Coma.exp Coma exp  [ SColen ] GOTO(73)
+exp ->.exp Plus trm  [ Coma Plus Minus ] GOTO(73)
+exp ->.exp Minus trm  [ Coma Plus Minus ] GOTO(73)
+exp ->.trm  [ Coma Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ Coma Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ Coma Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ Coma Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ Coma Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ Coma Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ Coma Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [71]
+THE KERNEL:
+figure -> Circle exp Coma exp Coma exp.  [ SColen ]
+exp -> exp.Plus trm  [ SColen Plus Minus ]
+exp -> exp.Minus trm  [ SColen Plus Minus ]
+THE ITEMS:
+figure -> Circle exp Coma exp Coma exp.  [ SColen ]  REDUCE[17]
+exp -> exp.Plus trm  [ SColen Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ SColen Plus Minus ] GOTO(37)
+
+
+CLOSURE [72]
+THE KERNEL:
+figure -> Box exp Coma exp Coma exp.Coma exp  [ SColen ]
+exp -> exp.Plus trm  [ Coma Plus Minus ]
+exp -> exp.Minus trm  [ Coma Plus Minus ]
+THE ITEMS:
+figure -> Box exp Coma exp Coma exp.Coma exp  [ SColen ] GOTO(74)
+exp -> exp.Plus trm  [ Coma Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Coma Plus Minus ] GOTO(37)
+
+
+CLOSURE [73]
+THE KERNEL:
+figure -> Line exp Coma exp Coma exp.Coma exp  [ SColen ]
+exp -> exp.Plus trm  [ Coma Plus Minus ]
+exp -> exp.Minus trm  [ Coma Plus Minus ]
+THE ITEMS:
+figure -> Line exp Coma exp Coma exp.Coma exp  [ SColen ] GOTO(75)
+exp -> exp.Plus trm  [ Coma Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ Coma Plus Minus ] GOTO(37)
+
+
+CLOSURE [74]
+THE KERNEL:
+figure -> Box exp Coma exp Coma exp Coma.exp  [ SColen ]
+THE ITEMS:
+figure -> Box exp Coma exp Coma exp Coma.exp  [ SColen ] GOTO(76)
+exp ->.exp Plus trm  [ SColen Plus Minus ] GOTO(76)
+exp ->.exp Minus trm  [ SColen Plus Minus ] GOTO(76)
+exp ->.trm  [ SColen Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ SColen Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ SColen Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ SColen Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ SColen Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [75]
+THE KERNEL:
+figure -> Line exp Coma exp Coma exp Coma.exp  [ SColen ]
+THE ITEMS:
+figure -> Line exp Coma exp Coma exp Coma.exp  [ SColen ] GOTO(77)
+exp ->.exp Plus trm  [ SColen Plus Minus ] GOTO(77)
+exp ->.exp Minus trm  [ SColen Plus Minus ] GOTO(77)
+exp ->.trm  [ SColen Plus Minus ] GOTO(15)
+trm ->.trm Mul fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.trm Div fct  [ SColen Plus Minus Mul Div ] GOTO(15)
+trm ->.fct  [ SColen Plus Minus Mul Div ] GOTO(16)
+fct ->.LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(17)
+fct ->.Minus fct  [ SColen Plus Minus Mul Div ] GOTO(18)
+fct ->.Number  [ SColen Plus Minus Mul Div ] GOTO(19)
+fct ->.Id  [ SColen Plus Minus Mul Div ] GOTO(20)
+fct ->.Fun LB exp RB  [ SColen Plus Minus Mul Div ] GOTO(21)
+
+
+CLOSURE [76]
+THE KERNEL:
+figure -> Box exp Coma exp Coma exp Coma exp.  [ SColen ]
+exp -> exp.Plus trm  [ SColen Plus Minus ]
+exp -> exp.Minus trm  [ SColen Plus Minus ]
+THE ITEMS:
+figure -> Box exp Coma exp Coma exp Coma exp.  [ SColen ]  REDUCE[18]
+exp -> exp.Plus trm  [ SColen Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ SColen Plus Minus ] GOTO(37)
+
+
+CLOSURE [77]
+THE KERNEL:
+figure -> Line exp Coma exp Coma exp Coma exp.  [ SColen ]
+exp -> exp.Plus trm  [ SColen Plus Minus ]
+exp -> exp.Minus trm  [ SColen Plus Minus ]
+THE ITEMS:
+figure -> Line exp Coma exp Coma exp Coma exp.  [ SColen ]  REDUCE[19]
+exp -> exp.Plus trm  [ SColen Plus Minus ] GOTO(36)
+exp -> exp.Minus trm  [ SColen Plus Minus ] GOTO(37)
+
+
+
+ACTION TABLE:
+   1:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   S6   S7  ERR  ERR  ERR   S8  ERR  ERR  ERR     ---    2    3    4    5  ---  ---  ---  ---  ---  ---
+   2:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   S9  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ACC     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+   3:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R3  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R3     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+   4:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R4  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R4     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+   5:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R5  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R5     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+   6:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  S10  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+   7:    ERR  ERR  ERR  ERR  ERR  S13  ERR  ERR  ERR  ERR  S12  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---   11  ---  ---  ---  ---  ---
+   8:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   14   15   16
+   9:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   S6   S7  ERR  ERR  ERR   S8  ERR  ERR  ERR     ---  ---   22    4    5  ---  ---  ---  ---  ---  ---
+  10:    S19  ERR  S18  ERR  ERR  S25  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---   24  ---  ---   23   15   16
+  11:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R8  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R8     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  12:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R11  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R11     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  13:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  S28   S7  S30  S32  S31   S8  S33  ERR  ERR     ---  ---  ---  ---   29  ---   26   27  ---  ---  ---
+  14:    ERR  S36  S37  ERR  ERR  S13  ERR  ERR  ERR  ERR  S34  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---   35  ---  ---  ---  ---  ---
+  15:    ERR  R23  R23  S38  S39  R23  R23  ERR  R23  R23  R23  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R23     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  16:    ERR  R26  R26  R26  R26  R26  R26  ERR  R26  R26  R26  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R26     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  17:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   40   15   16
+  18:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---   41
+  19:    ERR  R29  R29  R29  R29  R29  R29  ERR  R29  R29  R29  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R29     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  20:    ERR  R30  R30  R30  R30  R30  R30  ERR  R30  R30  R30  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R30     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  21:    ERR  ERR  ERR  ERR  ERR  S42  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  22:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R2  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R2     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  23:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  ERR   R6  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R6     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  24:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R7  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R7     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  25:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S43   S7  S30  S32  S31   S8  S33  S21  ERR     ---  ---  ---  ---   29  ---   26   27   40   15   16
+  26:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  S44  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  27:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R14  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  28:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  S45  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  29:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R16  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  30:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   46   15   16
+  31:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   47   15   16
+  32:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   48   15   16
+  33:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   49   15   16
+  34:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R9  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR   R9     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  35:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R10  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R10     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  36:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---   50   16
+  37:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---   51   16
+  38:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---   52
+  39:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---   53
+  40:    ERR  S36  S37  ERR  ERR  ERR  S54  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  41:    ERR  R28  R28  R28  R28  R28  R28  ERR  R28  R28  R28  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R28     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  42:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   55   15   16
+  43:    ERR  R30  R30  R30  R30  ERR  R30  S45  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  44:    ERR  ERR  ERR  ERR  ERR  ERR  S56  ERR  ERR  ERR  S28   S7  S30  S32  S31   S8  S33  ERR  ERR     ---  ---  ---  ---   29  ---  ---   57  ---  ---  ---
+  45:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   58   15   16
+  46:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  S59  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  47:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  S60  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  48:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  S61  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  49:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  S62  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  50:    ERR  R21  R21  S38  S39  R21  R21  ERR  R21  R21  R21  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R21     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  51:    ERR  R22  R22  S38  S39  R22  R22  ERR  R22  R22  R22  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R22     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  52:    ERR  R24  R24  R24  R24  R24  R24  ERR  R24  R24  R24  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R24     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  53:    ERR  R25  R25  R25  R25  R25  R25  ERR  R25  R25  R25  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R25     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  54:    ERR  R27  R27  R27  R27  R27  R27  ERR  R27  R27  R27  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R27     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  55:    ERR  S36  S37  ERR  ERR  ERR  S63  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  56:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R12  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R12     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  57:    ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R13  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  58:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  ERR  R15  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  59:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   64   15   16
+  60:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   65   15   16
+  61:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   66   15   16
+  62:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   67   15   16
+  63:    ERR  R31  R31  R31  R31  R31  R31  ERR  R31  R31  R31  ERR  ERR  ERR  ERR  ERR  ERR  ERR  R31     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  64:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  S68  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  65:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  S69  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  66:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  S70  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  67:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  ERR  R20  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  68:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   71   15   16
+  69:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   72   15   16
+  70:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   73   15   16
+  71:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  ERR  R17  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  72:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  S74  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  73:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  S75  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  74:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   76   15   16
+  75:    S19  ERR  S18  ERR  ERR  S17  ERR  ERR  ERR  ERR  S20  ERR  ERR  ERR  ERR  ERR  ERR  S21  ERR     ---  ---  ---  ---  ---  ---  ---  ---   77   15   16
+  76:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  ERR  R18  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+  77:    ERR  S36  S37  ERR  ERR  ERR  ERR  ERR  ERR  R19  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR  ERR     ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---
+
+TERMINALS:
+1  Number
+2  Plus
+3  Minus
+4  Mul
+5  Div
+6  LB
+7  RB
+8  Assign
+9  Coma
+10  SColen
+11  Id
+12  Draw
+13  Circle
+14  Line
+15  Box
+16  RepDraw
+17  Point
+18  Fun
+19  EOF
+
+NONTERMINALS:
+1  s
+2  stmts
+3  stmt
+4  def_stmt
+5  drw_stmt
+6  cfigure
+7  figures
+8  figure
+9  exp
+10  trm
+11  fct
+
+
+STATESCOUNT       = 77
+TERMINALCOUNT     = 19
+NONTERMINALCOUNT  = 11
+RULESCOUNT        = 31
+

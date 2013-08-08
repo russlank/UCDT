@@ -1,0 +1,960 @@
+unit DrawParser;
+
+interface
+
+uses Generics, Lexical, DrawLexical, Parser, Strings, Graph;
+
+type PSemanticProc = ^TSemanticProc;
+     TSemanticProc = procedure( AParser: PParser);
+
+     Float = Double;
+
+     PExp = ^TExp;
+     TExp = object( TGeneric)
+         function Value: Float; virtual;
+         end;
+
+     TOperation = ( opSum, opSub, opMul, opDiv);
+
+     POpExp = ^TOpExp;
+     TOpExp = object( TExp)
+     private
+         Operation: TOperation;
+         Left: PExp;
+         Right: PExp;
+     public
+         constructor Create( AOperation: TOperation; ALeft, ARight: PExp);
+         destructor Destroy; virtual;
+         function Value: Float; virtual;
+         end;
+
+     PNegExp = ^TNegExp;
+     TNegExp = object( TExp)
+     private
+         Exp: PExp;
+     public
+         constructor Create( AExp: PExp);
+         destructor Destroy; virtual;
+         function Value: Float; virtual;
+         end;
+
+     PConstantExp = ^TConstantExp;
+     TConstantExp = object( TExp)
+     private
+         Val: Float;
+     public
+         constructor Create( AValue: Float);
+         function Value: Float; virtual;
+         end;
+
+     PValue = ^TValue;
+     TValue = object( TGeneric)
+     private
+         Value: Float;
+     public
+         constructor Create( AValue: Float);
+         destructor Destroy; virtual;
+         function GetValue: Float;
+         procedure SetValue( AValue: Float);
+         end;
+
+     PIdAttribute = ^TIdAttribute;
+     TIdAttribute = object( TGeneric)
+         Str: string;
+         constructor Create( AIdStr: string);
+         end;
+
+     PVarExp = ^TVarExp;
+     TVarExp = object( TExp)
+     private
+         Val: PValue;
+     public
+         constructor Create( AValue: PValue);
+         function Value: Float; virtual;
+         end;
+
+     TFunction = ( fnNone, fnSin, fnCos, fnTan, fnLn, fnSqrt, fnSqr, fnExp);
+
+     PFunctionExp = ^TFunctionExp;
+     TFunctionExp = object( TExp)
+     private
+         Exp: PExp;
+         TheFunction: TFunction;
+     public
+         constructor Create( AFun: TFunction; AExp: PExp);
+         function Value: Float; virtual;
+         destructor Destroy; virtual;
+         end;
+
+     TSymbolType = ( symNone, symAction, symValue);
+
+     PSymbol = ^TSymbol;
+     TSymbol = object( TGeneric)
+     private
+         Typ: TSymbolType;
+         Title: PString;
+         Attributes: PGeneric;
+     public
+         constructor Create( ATitle: string; AType: TSymbolType; AAttributes: PGeneric);
+         destructor Destroy; virtual;
+         function GetTitle: string;
+         function GetType: TSymbolType;
+         function GetAttributes: PGeneric;
+         procedure SetAttributes( AAttributes: PGeneric);
+         procedure SetType( AType: TSymbolType);
+         end;
+
+     PAction = ^TAction;
+     TAction = object( TGeneric)
+     public
+         procedure Execute; virtual;
+         function Executable: Boolean; virtual;
+         end;
+
+     PRepAction = ^TRepAction;
+     TRepAction = object( TAction)
+     private
+         Exp: PExp;
+         Action: PAction;
+     public
+         constructor Create( AExp: PExp; AAction: PAction);
+         destructor Destroy; virtual;
+         procedure Execute; virtual;
+         function Executable: Boolean; virtual;
+         end;
+
+
+     PIndAction = ^TIndAction;
+     TIndAction = object( TAction)
+     private
+         Action: PAction;
+     public
+         constructor Create( AAction: PAction);
+         procedure Execute; virtual;
+         function Executable: Boolean; virtual;
+         end;
+
+     PCompAction = ^TCompAction;
+     TCompAction = object( TAction)
+     private
+         SubActions: TContainerCollection;
+     public
+         constructor Create;
+         destructor Destroy; virtual;
+         procedure Execute; virtual;
+         procedure AddAction( AAction: PAction);
+         function Executable: Boolean; virtual;
+         end;
+
+     PCircleDraw = ^TCircleDraw;
+     TCircleDraw = object( TAction)
+     private
+         Exp1, Exp2, Exp3: PExp;
+     public
+         constructor Create( AExp1, AExp2, AExp3: PExp);
+         procedure Execute; virtual;
+         destructor Destroy; virtual;
+         function Executable: Boolean; virtual;
+         end;
+
+     PBoxDraw = ^TBoxDraw;
+     TBoxDraw = object( TAction)
+     private
+         Exp1, Exp2, Exp3, Exp4: PExp;
+     public
+         constructor Create( AExp1, AExp2, AExp3, AExp4: PExp);
+         procedure Execute; virtual;
+         destructor Destroy; virtual;
+         function Executable: Boolean; virtual;
+         end;
+
+     PLineDraw = ^TLineDraw;
+     TLineDraw = object( TAction)
+     private
+         Exp1, Exp2, Exp3, Exp4: PExp;
+     public
+         constructor Create( AExp1, AExp2, AExp3, AExp4: PExp);
+         procedure Execute; virtual;
+         destructor Destroy; virtual;
+         function Executable: Boolean; virtual;
+         end;
+
+     PPointDraw = ^TPointDraw;
+     TPointDraw = object( TAction)
+     private
+         Exp1, Exp2: PExp;
+     public
+         constructor Create( AExp1, AExp2: PExp);
+         procedure Execute; virtual;
+         destructor Destroy; virtual;
+         function Executable: Boolean; virtual;
+         end;
+
+     PAssign = ^TAssign;
+     TAssign = object( TAction)
+     private
+         Exp: PExp;
+         Variable: PValue;
+     public
+         constructor Create( AExp: PExp; AVar: PValue);
+         procedure Execute; virtual;
+         destructor Destroy; virtual;
+         function Executable: Boolean; virtual;
+         end;
+
+     PDrawParser = ^TDrawParser;
+     TDrawParser = object( TParser)
+     private
+        Symbols: TContainerCollection;
+        Variables: TContainerCollection;
+        Actions: TContainerCollection;
+        Lexical: PDrawLexical;
+     public
+        constructor Create( AOwner: PErrGeneric; ASource: PStream);
+        destructor Destroy; virtual;
+        procedure ExecuteSemantic( ARule: Byte); virtual;
+        procedure NextToken; virtual;
+        function GetGoto( ATopState: Byte; ANonterminal: Byte): Byte; virtual;
+        procedure GetAction( ATopState: Byte; ATerminal: Word; var AAction: TActionRec); virtual;
+        function GetNonterminal( ARule: Byte): Byte; virtual;
+        function GetRuleSize( ARule: Byte): Byte; virtual;
+        procedure Error( AErrorCode: Byte); virtual;
+        procedure AddSymbol( ASymbol: PSymbol);
+        function FindSymbol( ATitle: string): PSymbol;
+        end;
+
+implementation
+
+function TExp.Value: Float;
+begin
+     Value := 0;
+end;
+
+constructor TOpExp.Create( AOperation: TOperation; ALeft, ARight: PExp);
+begin
+     inherited Create;
+     Operation := AOperation;
+     Left := ALeft;
+     Right := ARight;
+end;
+
+destructor TOpExp.Destroy;
+begin
+     if (Left <> nil)
+     then Left^.Free;
+     if (Right <> nil)
+     then Right^.Free;
+     inherited Destroy;
+end;
+
+function TOpExp.Value: Float;
+begin
+     if (( Left <> nil) and (Right <> nil))
+     then begin
+          case Operation
+          of opSum: Value := Left^.Value + Right^.Value;
+             opSub: Value := Left^.Value - Right^.Value;
+             opMul: Value := Left^.Value * Right^.Value;
+             opDiv: Value := Left^.Value / Right^.Value;
+             else
+                  Value := 0;
+             end;
+          end;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TNegExp.Create( AExp: PExp);
+begin
+     inherited Create;
+     Exp := AExp;
+end;
+
+destructor TNegExp.Destroy;
+begin
+     inherited Destroy;
+end;
+
+function TNegExp.Value: Float;
+begin
+     if ( Exp <> nil)
+     then Value := - Exp^.Value
+     else Value := 0;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TConstantExp.Create( AValue: Float);
+begin
+     inherited Create;
+     Val := AValue;
+end;
+
+function TConstantExp.Value: Float;
+begin
+     Value := Val;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TVarExp.Create( AValue: PValue);
+begin
+     inherited Create;
+     Val := AValue;
+end;
+
+function TVarExp.Value: Float;
+begin
+     if (Val <> nil)
+     then Value := Val^.Value
+     else Value := 0;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TFunctionExp.Create( AFun: TFunction; AExp: PExp);
+begin
+     inherited Create;
+     TheFunction := AFun;
+     Exp := AExp;
+end;
+
+function TFunctionExp.Value: Float;
+var Val: Float;
+begin
+     if ( Exp <> nil)
+     then begin
+          Val := Exp^.Value;
+          case TheFunction
+          of fnSin: Val := Sin( Val);
+             fnCos: Val := Cos( Val);
+             fnTan: Val := Sin( Val) / Cos( Val);
+             fnLn: Val := Ln( Val);
+             fnSqrt: Val := Sqrt( Val);
+             fnSqr: Val := Sqr( Val);
+             fnExp: Val := System.Exp( Val);
+             end;
+          Value := Val;
+          end
+     else Value := 0;
+end;
+
+destructor TFunctionExp.Destroy;
+begin
+     if ( Exp <> nil)
+     then Exp^.Free;
+     inherited destroy;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TSymbol.Create( ATitle: string; AType: TSymbolType; AAttributes: PGeneric);
+begin
+     inherited Create;
+     Typ := AType;
+     Title := AllocateString( ATitle);
+     Attributes := AAttributes;
+end;
+
+destructor TSymbol.Destroy;
+begin
+     if (Title <> nil)
+     then FreeString( Title);
+     if (Attributes <> nil)
+     then Attributes^.Free;
+     inherited Destroy;
+end;
+
+function TSymbol.GetTitle: string;
+begin
+     if (Title <> nil)
+     then GetTitle := Title^
+     else GetTitle := '';
+end;
+
+function TSymbol.GetAttributes: PGeneric;
+begin
+     GetAttributes := Attributes;
+end;
+
+procedure TSymbol.SetAttributes( AAttributes: PGeneric);
+begin
+     if (Attributes <> nil)
+     then Attributes^.Free;
+     Attributes := AAttributes;
+end;
+
+function TSymbol.GetType: TSymbolType;
+begin
+     GetType := Typ;
+end;
+
+procedure TSymbol.SetType( AType: TSymbolType);
+begin
+     Typ := AType;
+end;
+
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TValue.Create( AValue: Float);
+begin
+     inherited Create;
+     Value := AValue;
+end;
+
+destructor TValue.Destroy;
+begin
+     inherited Destroy;
+end;
+
+function TValue.GetValue: Float;
+begin
+     GetValue := Value;
+end;
+
+procedure TValue.SetValue( AValue: Float);
+begin
+     Value := AValue;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TIdAttribute.Create( AIdStr: string);
+begin
+     inherited Create;
+     Str := AIdStr;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+procedure TAction.Execute;
+begin
+end;
+
+function TAction.Executable: Boolean;
+begin
+     Executable := False;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TRepAction.Create( AExp: PExp; AAction: PAction);
+begin
+     inherited Create;
+     Exp := AExp;
+     Action := AAction;
+end;
+
+destructor TRepAction.Destroy;
+begin
+     if ( Exp <> nil)
+     then Exp^.Free;
+     if ( Action <> nil)
+     then Action^.Free;
+end;
+
+procedure TRepAction.Execute;
+var Count: Longint;
+    I: Longint;
+begin
+     if (( Exp <> nil) and (Action <> nil))
+     then begin
+          Count := Round( Exp^.Value);
+          if ( Count > 0)
+          then for I := 1 to Count
+               do Action^.Execute;
+          end;
+end;
+
+function TRepAction.Executable: Boolean;
+begin
+     Executable := True;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TIndAction.Create( AAction: PAction);
+begin
+     inherited Create;
+     Action := AAction;
+end;
+procedure TIndAction.Execute;
+begin
+     if ( Action <> nil)
+     then Action^.Execute;
+end;
+
+function TIndAction.Executable: Boolean;
+begin
+     Executable := True;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TCompAction.Create;
+begin
+     inherited Create;
+     SubActions.Create;
+end;
+
+destructor TCompAction.Destroy;
+begin
+     SubActions.Destroy;
+     inherited Destroy;
+end;
+
+procedure TCompAction.Execute;
+var ScanAction: PAction;
+begin
+     ScanAction := PAction( SubActions.GetFirst);
+     while ( ScanAction <> nil)
+     do begin
+        ScanAction^.Execute;
+        ScanAction := PAction( SubActions.GetNext);
+        end;
+end;
+
+procedure TCompAction.AddAction( AAction: PAction);
+begin
+     if ( AAction <> nil)
+     then SubActions.PushLast( AAction);
+end;
+
+function TCompAction.Executable: Boolean;
+begin
+     Executable := True;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TCircleDraw.Create( AExp1, AExp2, AExp3: PExp);
+begin
+     inherited Create;
+     Exp1 := AExp1;
+     Exp2 := AExp2;
+     Exp3 := AExp3;
+end;
+
+procedure TCircleDraw.Execute;
+var V1, V2, V3: Integer;
+begin
+     if (( Exp1 <> nil) and ( Exp2 <> nil) and ( Exp3 <> nil))
+     then begin
+          V1 := Round( Exp1^.Value);
+          V2 := Round( Exp2^.Value);
+          V3 := Round( Exp3^.Value);
+          Circle( V1, V2, V3);
+          end;
+end;
+
+destructor TCircleDraw.Destroy;
+begin
+     if ( Exp1 <> nil)
+     then Exp1^.Free;
+
+     if ( Exp2 <> nil)
+     then Exp2^.Free;
+
+     if ( Exp3 <> nil)
+     then Exp3^.Free;
+
+     inherited Destroy;
+end;
+
+function TCircleDraw.Executable: Boolean;
+begin
+     Executable := True;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TBoxDraw.Create( AExp1, AExp2, AExp3, AExp4: PExp);
+begin
+     inherited Create;
+     Exp1 := AExp1;
+     Exp2 := AExp2;
+     Exp3 := AExp3;
+     Exp4 := AExp4;
+end;
+
+procedure TBoxDraw.Execute;
+var V1, V2, V3, V4: Integer;
+begin
+     if (( Exp1 <> nil) and ( Exp2 <> nil) and ( Exp3 <> nil) and (Exp4 <> nil))
+     then begin
+          V1 := Round( Exp1^.Value);
+          V2 := Round( Exp2^.Value);
+          V3 := Round( Exp3^.Value);
+          V4 := Round( Exp4^.Value);
+          Line( V1, V2, V1, V4);
+          Line( V1, V4, V3, V4);
+          Line( V3, V4, V3, V2);
+          Line( V3, V2, V1, V2);
+          end;
+end;
+
+destructor TBoxDraw.Destroy;
+begin
+     if ( Exp1 <> nil)
+     then Exp1^.Free;
+
+     if ( Exp2 <> nil)
+     then Exp2^.Free;
+
+     if ( Exp3 <> nil)
+     then Exp3^.Free;
+
+     if ( Exp4 <> nil)
+     then Exp4^.Free;
+
+     inherited Destroy;
+end;
+
+function TBoxDraw.Executable: Boolean;
+begin
+     Executable := True;
+end;
+
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TLineDraw.Create( AExp1, AExp2, AExp3, AExp4: PExp);
+begin
+     inherited Create;
+     Exp1 := AExp1;
+     Exp2 := AExp2;
+     Exp3 := AExp3;
+     Exp4 := AExp4;
+end;
+
+procedure TLineDraw.Execute;
+var V1, V2, V3, V4: Integer;
+begin
+     if (( Exp1 <> nil) and ( Exp2 <> nil) and ( Exp3 <> nil) and (Exp4 <> nil))
+     then begin
+          V1 := Round( Exp1^.Value);
+          V2 := Round( Exp2^.Value);
+          V3 := Round( Exp3^.Value);
+          V4 := Round( Exp4^.Value);
+          Line( V1, V2, V3, V4);
+          end;
+end;
+
+destructor TLineDraw.Destroy;
+begin
+     if ( Exp1 <> nil)
+     then Exp1^.Free;
+
+     if ( Exp2 <> nil)
+     then Exp2^.Free;
+
+     if ( Exp3 <> nil)
+     then Exp3^.Free;
+
+     if ( Exp4 <> nil)
+     then Exp4^.Free;
+
+     inherited Destroy;
+end;
+
+function TLineDraw.Executable: Boolean;
+begin
+     Executable := True;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TPointDraw.Create( AExp1, AExp2: PExp);
+begin
+     inherited Create;
+     Exp1 := AExp1;
+     Exp2 := AExp2;
+end;
+
+procedure TPointDraw.Execute;
+var V1, V2: Integer;
+begin
+     if (( Exp1 <> nil) and ( Exp2 <> nil))
+     then begin
+          V1 := Round( Exp1^.Value);
+          V2 := Round( Exp2^.Value);
+          PutPixel( V1, V2, 15);
+          end;
+end;
+
+destructor TPointDraw.Destroy;
+begin
+     if ( Exp1 <> nil)
+     then Exp1^.Free;
+
+     if ( Exp2 <> nil)
+     then Exp2^.Free;
+
+     inherited Destroy;
+end;
+
+function TPointDraw.Executable: Boolean;
+begin
+     Executable := True;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TAssign.Create( AExp: PExp; AVar: PValue);
+begin
+     inherited Create;
+     Exp := AExp;
+     Variable := AVar;
+end;
+
+procedure TAssign.Execute;
+begin
+     if (( Exp <> nil) and (Variable <> nil))
+     then Variable^.SetValue( Exp^.Value);
+end;
+
+destructor TAssign.Destroy;
+begin
+     if (Exp <> nil)
+     then Exp^.Free;
+     inherited Destroy;
+end;
+
+function TAssign.Executable: Boolean;
+begin
+     Executable := True;
+end;
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+{$F+}
+%%PAS_PROCEDURES
+
+const
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+%%PAS_DEFINES
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+      ActionTable: array [1..YACC_STATESCOUNT, 1..YACC_TERMINALSCOUNT] of TActionRec =
+%%PAS_ACTION
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+      GotoTable: array[ 1..YACC_STATESCOUNT, 1..YACC_NONTERMINALSCOUNT] of Byte =
+%%PAS_GOTO
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+      RuleSizes: array[ 1..YACC_RULESCOUNT] of Byte =
+%%PAS_RIGHTSIDES
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+      RulesSymbol: array[ 1..YACC_RULESCOUNT] of Byte =
+%%PAS_LEFTSIDES
+
+      SemanticsTable: array[ 1..YACC_RULESCOUNT] of TSemanticProc =
+%%PAS_REDUCTIONS
+
+{$I DRAWDEFS.INC}
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TDrawParser.Create( AOwner: PErrGeneric; ASource: PStream);
+begin
+     inherited Create( AOwner);
+     Lexical := New( PDrawLexical, Create( @Self, ASource));
+
+     Symbols.Create;
+     Variables.Create;
+     Actions.Create;
+end;
+
+destructor TDrawParser.Destroy;
+begin
+     if ( Lexical <> nil)
+     then Lexical^.Free;
+
+     Symbols.Destroy;
+     Variables.Destroy;
+     Actions.Destroy;
+
+     inherited Destroy;
+end;
+
+procedure TDrawParser.NextToken;
+var Attrs: TTokenAttributes;
+    Token: Word;
+    TokenAttrs: PGeneric;
+begin
+     if Lexical^.Token( Attrs)
+     then begin
+          Token := Attrs.Token;
+          case Token
+          of YACC_Number: begin
+                          TokenAttrs := New( PValue, Create( Attrs.Value));
+                          end;
+             YACC_Id: begin
+                      TokenAttrs := New( PIdAttribute, Create( StrPas(Attrs.Lexeme)));
+                      end;
+             YACC_Fun: begin
+                       TokenAttrs := New( PIdAttribute, Create( StrPas(Attrs.Lexeme)));
+                       end;
+          0: begin
+             TokenAttrs := nil;
+             StopParsing;
+             end
+          else
+              TokenAttrs := nil;
+              end;
+          end
+     else begin
+          TokenAttrs := nil;
+          StopParsing;
+          end;
+
+     SetToken( Token, TokenAttrs);
+end;
+
+procedure TDrawParser.ExecuteSemantic( ARule: Byte);
+begin
+     if (@SemanticsTable[ARule] <> nil)
+     then SemanticsTable[ ARule]( @Self);
+end;
+
+function TDrawParser.GetGoto( ATopState: Byte; ANonterminal: Byte): Byte;
+begin
+     if ((ATopState <> 0) and (ANonterminal <> 0))
+     then GetGoto := GotoTable[ ATopState, ANonTerminal]
+     else begin
+          GetGoto := 0;
+          StopParsing;
+          end;
+end;
+
+procedure TDrawParser.GetAction( ATopState: Byte; ATerminal: Word; var AAction: TActionRec);
+begin
+     if ((ATerminal <> 0) and (ATopState <> 0))
+     then AAction := ActionTable[ ATopState, ATerminal]
+     else begin
+          AAction.Action := actError;
+          AAction.ErrorCode := 0;
+          StopParsing;
+          end;
+end;
+
+function TDrawParser.GetNonterminal( ARule: Byte): Byte;
+begin
+     if (ARule <> 0)
+     then GetNonterminal := RulesSymbol[ ARule]
+     else begin
+          StopParsing;
+          GetNonterminal := 0;
+          end;
+end;
+
+function TDrawParser.GetRuleSize( ARule: Byte): Byte;
+begin
+     if (ARule <> 0)
+     then GetRuleSize := RuleSizes[ ARule]
+     else GetRuleSize := 0;
+end;
+
+procedure TDrawParser.Error( AErrorCode: Byte);
+var S1, S2: string;
+begin
+     inherited Error( AErrorCode);
+     if ( Lexical <> nil)
+     then begin
+          Str( Lexical^.GetLineNo, S1);
+          Str( Lexical^.GetCollomnNo, S2);
+          S1 := 'PARSER ERROR: Syntax error (Line ' + S1 + ', Col ' + S2 + ').';
+          AddError( New( PMessageError, Create( S1)));
+          end
+     else begin
+          AddError( New( PMessageError, Create( 'PARSER ERROR: Syntax error')));
+          end;
+end;
+
+procedure TDrawParser.AddSymbol( ASymbol: PSymbol);
+var OldSymbol: PSymbol;
+begin
+     if (ASymbol <> nil)
+     then begin
+          OldSymbol := FindSymbol( ASymbol^.GetTitle);
+          if ( OldSymbol <> nil)
+          then begin
+               Symbols.RemoveFromCollection( OldSymbol);
+               OldSymbol^.Free;
+               end;
+          Symbols.PushFirst( ASymbol);
+          end;
+end;
+
+function TDrawParser.FindSymbol( ATitle: string): PSymbol;
+var ScanSymbol: PSymbol;
+begin
+     ScanSymbol := PSymbol( Symbols.GetFirst);
+     while ( ScanSymbol <> nil)
+     do begin
+        if ScanSymbol^.GetTitle = ATitle
+        then begin
+             FindSymbol := ScanSymbol;
+             exit;
+             end
+        else ScanSymbol := PSymbol( Symbols.GetNext);
+        end;
+     FindSymbol := ScanSymbol;
+end;
+
+end.

@@ -1,0 +1,136 @@
+unit CalcLexical;
+
+interface
+
+uses Generics, Crt, Lexical;
+
+type TTokenAttributes = record
+        Token: Word;
+        Lexeme: array[0..MAXLEXEMESTRLENGTH] of Char;
+        LexemeLen: Word;
+        Buffer: PChar; BufferSize: Word;
+        Value: Real;
+        end;
+
+     PPatternProc = ^TPatternProc;
+     TPatternProc = procedure( ALex: PLexical; var AReturn: Boolean; var AInfo);
+
+{*************************************************}
+{*                                               *}
+{*                                               *}
+{*                                               *}
+{*************************************************}
+
+     PCalcLexical = ^TCalcLexical;
+     TCalcLexical = object( TLexical)
+     private
+         CollomnNo: Longint;
+         LineNo: Longint;
+     public
+         constructor Create( AOwner: PErrGeneric; ASource: PStream);
+         procedure InputFilter( AChar: Char); virtual;
+         function GetNextState( AState: Word; AChar: Char): Word; virtual;
+         function CallPatternProcedure( AState: Word; var ATokenInfo): Boolean; virtual;
+         function IsAcceptingState( AState: Word): Boolean; virtual;
+         procedure BadLexeme( var ATokenInfo); virtual;
+         function TerminateToken( var ATokenInfo): Boolean; virtual;
+         function GetLineNo: Longint;
+         function GetCollomnNo: Longint;
+         end;
+
+implementation
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+{$I CALCDEFS.INC}
+
+%%PAS_DEFINES
+
+const LexicalCharGoupsTable: array[Char] of Byte =
+%%PAS_ALPHABET
+
+const CalcLexicalAutoTable: array[ 1..LEX_STATESCOUNT, 1..LEX_ALPHABETSIZE] of Word =
+%%PAS_DFATABLE
+
+{$F+}
+
+%%PAS_ACTIONSPROCEDURES
+
+const LexicalPatternsTable: array[ 1..LEX_STATESCOUNT] of TPatternProc =
+%%PAS_ACTIONSTABLE
+
+{******************************************************************}
+{*                                                                *}
+{******************************************************************}
+
+constructor TCalcLexical.Create( AOwner: PErrGeneric; ASource: PStream);
+begin
+     inherited Create( AOwner, ASource);
+     CollomnNo := 0;
+     LineNo := 1;
+end;
+
+function TCalcLexical.GetNextState( AState: Word; AChar: Char): Word;
+begin
+     GetNextState := CalcLexicalAutoTable[ AState, LexicalCharGoupsTable[ AChar]];
+end;
+
+function TCalcLexical.IsAcceptingState( AState: Word): Boolean;
+begin
+     IsAcceptingState := (@LexicalPatternsTable[AState] <> nil);
+end;
+
+procedure TCalcLexical.InputFilter( AChar: Char);
+begin
+     if ( AChar = #13)
+     then begin
+          LineNo := LineNo + 1;
+          CollomnNo := 0;
+          end
+     else CollomnNo := CollomnNo + 1;
+end;
+
+function TCalcLexical.CallPatternProcedure( AState: Word; var ATokenInfo): Boolean;
+var Return: Boolean;
+begin
+     if (@LexicalPatternsTable[AState] <> nil)
+     then begin
+          Return := True;
+          LexicalPatternsTable[ AState]( @Self, Return, ATokenInfo);
+          CallPatternProcedure := Return;
+          end
+     else begin
+          BadLexeme( ATokenInfo);
+          CallPatternProcedure := False;
+          end;
+end;
+
+procedure TCalcLexical.BadLexeme( var ATokenInfo);
+var S1, S2: string;
+begin
+     Str( GetLineNo, S1);
+     Str( GetCollomnNo, S2);
+     S1 := 'LEXICAL ERROR: Bad lexeme (Line ' + S1 + ', Col ' + S2 + ').';
+     AddError( New( PMessageError, Create(S1)));
+     TTokenAttributes(ATokenInfo).Token := 0;
+end;
+
+function TCalcLexical.TerminateToken( var ATokenInfo): Boolean;
+begin
+     TTokenAttributes(ATokenInfo).Token := YACC_EOF;
+     TerminateToken := True;
+end;
+
+function TCalcLexical.GetLineNo: Longint;
+begin
+     GetLineNo := LineNo;
+end;
+
+function TCalcLexical.GetCollomnNo: Longint;
+begin
+     GetCollomnNo := CollomnNo;
+end;
+
+end.
